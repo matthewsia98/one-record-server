@@ -5,8 +5,8 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/notifications/
 from fastapi import APIRouter, Depends, Response, Header, status
 import rdflib.util
 from rdflib import Graph
-from _API import API
-from _CARGO import CARGO
+from app.namespaces._API import API
+from app.namespaces._CARGO import CARGO
 from app.dependencies.graph import parse_graph
 
 router = APIRouter()

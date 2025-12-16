@@ -6,8 +6,8 @@ from fastapi import (
 )
 import rdflib.util
 from rdflib import Graph
-from _API import API
-from _CARGO import CARGO
+from app.namespaces._API import API
+from app.namespaces._CARGO import CARGO
 from app.dependencies.graph import parse_graph
 
 router = APIRouter()

@@ -9,10 +9,10 @@ from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 from typing import Annotated, Any, Optional
 
 import rdflib.util
-from _API import API
+from app.namespaces._API import API
 from datetime import datetime
 
-from _CARGO import CARGO
+from app.namespaces._CARGO import CARGO
 
 
 def validate_topic_type(value: Any) -> URIRef:

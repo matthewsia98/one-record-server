@@ -1,6 +1,6 @@
 import requests
 from rdflib import Graph, OWL, RDF
-from _API import API
+from app.namespaces._API import API
 
 
 response = requests.get("https://onerecord.iata.org/ns/api/ontology.ttl")
