@@ -13,7 +13,7 @@ from app.dependencies.graph import parse_graph
 router = APIRouter()
 
 
-@router.post("/echo", tags=["testing"])
+@router.post("/_internal/echo", tags=["internal"])
 async def echo(request: Request, g: Graph = Depends(parse_graph)):
     response_type, version = request.headers.get("accept").split(";", 1)
     response_type = response_type.strip()

@@ -22,10 +22,9 @@ async def parse_graph(request: Request) -> Graph:
         )
 
     body_bytes = await request.body()
-    body_str = body_bytes.decode("utf-8")
 
     g = Graph()
 
-    g.parse(data=body_str, format="json-ld")
+    g.parse(data=body_bytes, format="json-ld")
 
     return g

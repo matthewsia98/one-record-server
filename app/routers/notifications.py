@@ -47,7 +47,7 @@ async def receive_notification(
             break
 
     print(
-        "Received Notification:\n",
+        "\x1b[1;46m Received Notification \x1b[0m\n",
         g.serialize(
             format=serialization_format,
             context={

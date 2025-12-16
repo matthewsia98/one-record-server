@@ -4,9 +4,8 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/subscriptions/
 
 from fastapi import APIRouter, Response, Query, Header, status
 import rdflib.util
-from rdflib import Graph, RDF, BNode, Literal, URIRef, XSD
-from _API import API
-from _CARGO import CARGO
+from rdflib import URIRef
+from app.models.subscription import Subscription
 
 router = APIRouter()
 
@@ -128,40 +127,24 @@ async def get_subscription_info(
             status_code=status.HTTP_400_BAD_REQUEST,
         )
 
-    node = BNode(
-        "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185"
+    subscription = Subscription(
+        id=URIRef(
+            "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185"
+        ),
+        subscriber=URIRef(
+            "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
+        ),
+        topic_type=URIRef(topic_type),
+        topic=topic,
     )
-    g = Graph(bind_namespaces="none")
-    g.bind("cargo", CARGO._NS)
-    g.bind("api", API._NS)
-
-    g.add((node, RDF.type, API.Subscription))
-    g.add((node, API.hasContentType, Literal(response_type)))
-    g.add(
-        (
-            node,
-            API.hasSubscriber,
-            URIRef(
-                "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
-            ),
-        )
-    )
-    g.add((node, API.hasTopicType, URIRef(topic_type)))
-    g.add((node, API.includeSubscriptionEventType, API.LOGISTICS_OBJECT_UPDATED))
-    g.add((node, API.includeSubscriptionEventType, API.LOGISTICS_OBJECT_CREATED))
-    g.add((node, API.includeSubscriptionEventType, API.LOGISTICS_EVENT_RECEIVED))
-    g.add((node, API.hasTopic, Literal(topic, datatype=XSD.anyURI)))
-
     return Response(
         headers={
             "Content-Type": response_type,
             "Content-Language": "en-US",
         },
-        content=g.serialize(
-            format=serialization_format,
+        content=subscription.model_dump(
             context={
-                "cargo": CARGO._NS,
-                "api": API._NS,
-            },
+                "format": serialization_format,
+            }
         ),
     )
