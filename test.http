@@ -1,0 +1,53 @@
+POST http://localhost:8000/echo HTTP/1.1
+Content-Type: application/ld+json
+Accept: text/turtle; version=2.2.0
+
+{
+    "@context": {
+        "cargo": "https://onerecord.iata.org/ns/cargo#"
+    },
+    "@type": "cargo:Piece",
+    "cargo:coload": {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": "false"
+    },
+    "cargo:specialHandlingCodes": [
+        {
+            "@id": "https://onerecord.iata.org/ns/code-lists/SpecialHandlingCode#VAL"
+        }
+    ]
+}
+
+
+###
+
+GET http://localhost:8000/subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_IDENTIFIER&topic=https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
+Host: 1r.example.com
+Accept: application/ld+json; version=2.2.0
+
+###
+
+POST http://localhost:8000/notifications HTTP/1.1
+Host: 1r.example.com
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "api": "https://onerecord.iata.org/ns/api#"
+    },
+    "@type": "api:Notification",
+    "api:hasEventType": {
+        "@id": "api:LOGISTICS_OBJECT_CREATED"
+    },
+    "api:hasLogisticsObject": {
+        "@id": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
+    },
+    "api:hasLogisticsObjectType": {
+        "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "@value": "https://onerecord.iata.org/ns/cargo#Piece"
+    },
+    "api:isTriggeredBy": {
+        "@id": "https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed"
+    }
+}
