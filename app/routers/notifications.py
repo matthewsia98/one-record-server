@@ -2,12 +2,10 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/notifications/
 """
 
-from fastapi import APIRouter, Depends, Response, Header, status
-import rdflib.util
-from rdflib import Graph
-from app.namespaces._API import API
-from app.namespaces._CARGO import CARGO
-from app.dependencies.graph import parse_graph
+from devtools import debug
+from fastapi import APIRouter, Depends, Header, Response, status
+
+from app.models.notification import Notification
 
 router = APIRouter()
 
@@ -16,16 +14,73 @@ router = APIRouter()
 @router.post(
     "/notifications",
     tags=["notifications"],
+    status_code=status.HTTP_204_NO_CONTENT,
     response_class=Response,
     responses={
         204: {"description": "The request has been successful"},
-        400: {"description": "Notification format is invalid"},
-        401: {"description": "Not authenticated, invalid or expired token"},
-        403: {"description": "Not authorized to perform action"},
-        404: {"description": "Resource Not Found"},
-        405: {"description": "Method not allowed"},
-        415: {"description": "Unsupported content type"},
-        500: {"description": "Internal Server Error"},
+        400: {
+            "description": "Notification format is invalid",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
+        401: {
+            "description": "Not authenticated, invalid or expired token",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
+        403: {
+            "description": "Not authorized to perform action",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
+        404: {
+            "description": "Resource Not Found",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
+        405: {
+            "description": "Method not allowed",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
+        415: {
+            "description": "Unsupported content type",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
+        500: {
+            "description": "Internal Server Error",
+            "content": {
+                "application/ld+json": {
+                    "schema": {"$ref": "#/components/schemas/Error"},
+                    "example": {},
+                }
+            },
+        },
     },
 )
 async def receive_notification(
@@ -34,28 +89,9 @@ async def receive_notification(
         description="The content type in which the ONE Record client wants the HTTP response formatted.",
         example="application/ld+json",
     ),
-    g: Graph = Depends(parse_graph),
+    notification: Notification = Depends(Notification.from_graph),
 ):
-    response_type, _, version = accept.partition(";")
-    response_type = response_type.strip()
-    version = version.strip()
-
-    serialization_format = "json-ld"
-    for short, long in rdflib.util.FORMAT_MIMETYPE_MAP.items():
-        if long[0] == response_type:
-            serialization_format = short
-            break
-
-    print(
-        "\x1b[1;46m Received Notification \x1b[0m\n",
-        g.serialize(
-            format=serialization_format,
-            context={
-                "cargo": CARGO._NS,
-                "api": API._NS,
-            },
-        ),
-    )
+    debug(notification)
 
     return Response(
         status_code=status.HTTP_204_NO_CONTENT,

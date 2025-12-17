@@ -1,21 +1,22 @@
-from fastapi import (
-    Depends,
-    Request,
-    Response,
-    APIRouter,
-)
 import rdflib.util
+from fastapi import (
+    APIRouter,
+    Depends,
+    Header,
+    Response,
+)
 from rdflib import Graph
+
+from app.dependencies.graph import parse_graph
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
-from app.dependencies.graph import parse_graph
 
 router = APIRouter()
 
 
 @router.post("/_internal/echo", tags=["internal"])
-async def echo(request: Request, g: Graph = Depends(parse_graph)):
-    response_type, version = request.headers.get("accept").split(";", 1)
+async def echo(accept: str = Header(...), g: Graph = Depends(parse_graph)):
+    response_type, _, version = accept.partition(";")
     response_type = response_type.strip()
     version = version.strip()
 

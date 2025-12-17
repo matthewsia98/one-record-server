@@ -2,7 +2,7 @@
 Docstring for app.dependencies.graph
 """
 
-from fastapi import Request, HTTPException, status
+from fastapi import HTTPException, Request, status
 from rdflib import Graph
 
 
@@ -27,4 +27,7 @@ async def parse_graph(request: Request) -> Graph:
 
     g.parse(data=body_bytes, format="json-ld")
 
-    return g
+    return g.skolemize(
+        authority="http://tc.gc.ca/",
+        basepath="/pact/one-record-server/",
+    )

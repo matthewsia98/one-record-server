@@ -2,9 +2,8 @@ from fastapi import (
     FastAPI,
 )
 
-from app.routers import subscriptions, notifications
 from app.internal import testing
-
+from app.routers import notifications, subscriptions
 
 app = FastAPI()
 app.include_router(subscriptions.router)

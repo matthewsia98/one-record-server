@@ -11,6 +11,11 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "devtools>=0.12.2",
     "mypy>=1.19.1",
-    "requests>=2.32.5",
+]
+
+[tool.ruff.lint]
+extend-select = [
+    "I"
 ]
