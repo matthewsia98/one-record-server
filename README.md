@@ -26,6 +26,14 @@ uvx check
 uvx check --fix
 ```
 
+```
+uv run pre-commit install
+```
+
+```
+uv run pre-commit run --all-files
+```
+
 ## Docker
 
 ```

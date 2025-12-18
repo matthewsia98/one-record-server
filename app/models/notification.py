@@ -1,11 +1,11 @@
-from typing import Optional, Set
+from typing import Optional, Set, override
 
 from fastapi import Depends
 from pydantic import BaseModel, Field
 from rdflib import RDF, Graph, Literal, URIRef
 
 from app.dependencies.graph import parse_graph
-from app.models.common import IRI
+from app.models.common import IRI, Graphable
 from app.models.logistics_object import LogisticsObject
 from app.namespaces._API import API
 
@@ -15,7 +15,7 @@ class NotificationMessage(BaseModel):
     logistics_object: Optional[LogisticsObject] = None
 
 
-class Notification(BaseModel):
+class Notification(BaseModel, Graphable):
     iri: IRI
     event_type: IRI
     has_logistics_object_type: Optional[str] = None
@@ -23,6 +23,7 @@ class Notification(BaseModel):
     triggered_by: Optional[IRI] = None
     changed_properties: Set[IRI] = Field(default_factory=set)
 
+    @override
     @classmethod
     async def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Notification:
         """
@@ -79,3 +80,9 @@ class Notification(BaseModel):
             triggered_by=triggered_by,
             changed_properties=changed_properties,
         )
+
+    @override
+    def to_graph(self) -> Graph:
+        g = Graph()
+
+        return g

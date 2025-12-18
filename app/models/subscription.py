@@ -50,6 +50,11 @@ class Subscription(BaseModel, Graphable):
         return v
 
     @override
+    @classmethod
+    def from_graph(cls, graph: Graph) -> Subscription:
+        return Subscription()
+
+    @override
     def to_graph(self) -> Graph:
         node = BNode(str(self.id))
         g = Graph(bind_namespaces="none")
