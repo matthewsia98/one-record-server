@@ -25,7 +25,7 @@ class Notification(BaseModel, Graphable):
 
     @override
     @classmethod
-    async def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Notification:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Notification:
         """
         Construct a Notification instance from an RDF graph.
         Assumes there is exactly one Notification in the graph.

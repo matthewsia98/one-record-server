@@ -117,6 +117,6 @@ POST /internal/assessment HTTP/1.1
 Host: localhost:8000
 
 {
-    "target": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+    "target": "http://localhost:8000/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
     "status": "RFI"
 }

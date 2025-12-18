@@ -122,7 +122,12 @@ async def create_assessment(assessment: Assessment):
     try:
         async with aiohttp.ClientSession() as session:
             async with session.post(
-                str(assessment.target),
+                "/".join(
+                    [
+                        str(assessment.target).rstrip("/"),
+                        "logistics-events",
+                    ]
+                ),
                 json=compacted,
                 headers={
                     "Accept": "application/ld+json",

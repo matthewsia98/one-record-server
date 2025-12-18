@@ -4,6 +4,7 @@ from fastapi import (
 
 from app.internal import assessment, testing
 from app.routers import (
+    logistics_events,
     logistics_objects,
     notifications,
     server_information,
@@ -16,5 +17,6 @@ app.include_router(server_information.router)
 app.include_router(subscriptions.router)
 app.include_router(notifications.router)
 app.include_router(logistics_objects.router)
+app.include_router(logistics_events.router)
 app.include_router(assessment.router)
 app.include_router(testing.router)
