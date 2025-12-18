@@ -2,13 +2,10 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/subscriptions/
 """
 
-from typing import Union
-
 import rdflib.util
 from fastapi import APIRouter, Header, Query, Response, status
 from pydantic import AnyUrl
 
-from app.models.error import Error
 from app.models.subscription import Subscription
 
 router = APIRouter()
@@ -30,77 +27,77 @@ SUBSCRIPTIONS_RESPONSE_HEADERS = {
     "/subscriptions",
     tags=["subscriptions"],
     response_class=Response,
-    response_model=Union[Subscription, Error],
+    # response_model=Union[Subscription, Error],
     responses={
         200: {
             "description": "The request to retrieve the Subscription Information has been successful",
-            # "headers": SUBSCRIPTIONS_RESPONSE_HEADERS,
-            "content": {
-                "application/ld+json": {
-                    "schema": {"$ref": "#/components/schemas/Subscription"},
-                    "example": {
-                        "@context": {
-                            "cargo": "https://onerecord.iata.org/ns/cargo#",
-                            "api": "https://onerecord.iata.org/ns/api#",
-                        },
-                        "@id": "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185",
-                        "@type": "api:Subscription",
-                        "api:hasContentType": "application/ld+json",
-                        "api:hasSubscriber": {
-                            "@id": "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
-                        },
-                        "api:hasTopicType": {"@id": "api:LOGISTICS_OBJECT_IDENTIFIER"},
-                        "api:includeSubscriptionEventType": [
-                            {"@id": "api:LOGISTICS_OBJECT_UPDATED"},
-                            {"@id": "api:LOGISTICS_OBJECT_CREATED"},
-                            {"@id": "api:LOGISTICS_EVENT_RECEIVED"},
-                        ],
-                        "api:hasTopic": {
-                            "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
-                            "@value": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
-                        },
-                    },
-                }
-            },
+            "headers": SUBSCRIPTIONS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Subscription"},
+            #         "example": {
+            #             "@context": {
+            #                 "cargo": "https://onerecord.iata.org/ns/cargo#",
+            #                 "api": "https://onerecord.iata.org/ns/api#",
+            #             },
+            #             "@id": "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185",
+            #             "@type": "api:Subscription",
+            #             "api:hasContentType": "application/ld+json",
+            #             "api:hasSubscriber": {
+            #                 "@id": "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
+            #             },
+            #             "api:hasTopicType": {"@id": "api:LOGISTICS_OBJECT_IDENTIFIER"},
+            #             "api:includeSubscriptionEventType": [
+            #                 {"@id": "api:LOGISTICS_OBJECT_UPDATED"},
+            #                 {"@id": "api:LOGISTICS_OBJECT_CREATED"},
+            #                 {"@id": "api:LOGISTICS_EVENT_RECEIVED"},
+            #             ],
+            #             "api:hasTopic": {
+            #                 "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+            #                 "@value": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+            #             },
+            #         },
+            #     }
+            # },
         },
         400: {
             "description": "The request is invalid",
             # "headers": SUBSCRIPTIONS_RESPONSE_HEADERS,
-            "content": {
-                "application/ld+json": {
-                    "schema": {"$ref": "#/components/schemas/Error"},
-                    "example": {},
-                }
-            },
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         "example": {},
+            #     }
+            # },
         },
         401: {
             "description": "Not authenticated",
             # "headers": SUBSCRIPTIONS_RESPONSE_HEADERS,
-            "content": {
-                "application/ld+json": {
-                    "schema": {"$ref": "#/components/schemas/Error"},
-                    "example": {},
-                }
-            },
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         "example": {},
+            #     }
+            # },
         },
         403: {
             "description": "Not authorized to retrieve the Subscription Information",
-            "content": {
-                "application/ld+json": {
-                    "schema": {"$ref": "#/components/schemas/Error"},
-                    "example": {},
-                }
-            },
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         "example": {},
+            #     }
+            # },
         },
         500: {
             "description": "Internal server error",
             # "headers": SUBSCRIPTIONS_RESPONSE_HEADERS,
-            "content": {
-                "application/ld+json": {
-                    "schema": {"$ref": "#/components/schemas/Error"},
-                    "example": {},
-                }
-            },
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         "example": {},
+            #     }
+            # },
         },
     },
 )

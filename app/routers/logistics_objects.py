@@ -13,11 +13,13 @@ router = APIRouter()
 LOGISTICS_OBJECTS_RESPONSE_HEADERS = {
     "Location": {
         "description": "The URI of the newly created Logistics Object",
-        "schema": {"type": "string"},
+        "required": True,
+        "schema": {"type": "string", "format": "uri"},
     },
     "Type": {
         "description": "The type of the newly created Logistics Object as a URI",
-        "schema": {"type": "string"},
+        "required": True,
+        "schema": {"type": "string", "format": "uri"},
     },
 }
 
@@ -27,35 +29,73 @@ LOGISTICS_OBJECTS_RESPONSE_HEADERS = {
     "/logistics-objects",
     tags=["logistics-objects"],
     status_code=status.HTTP_201_CREATED,
+    # openapi_extra={
+    #     "requestBody": {
+    #         "content": {
+    #             "application/ld+json": {
+    #                 "schema": {"$ref": "#/components/schemas/LogisticsObject"},
+    #             }
+    #         }
+    #     }
+    # },
     response_class=Response,
     responses={
         201: {
             "description": "Logistics Object has been created",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
         },
         400: {
             "description": "Invalid Logistics Object",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #     }
+            # },
         },
         401: {
             "description": "Not authenticated",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         # "example": {},
+            #     }
+            # },
         },
         403: {
             "description": "Not authorized to publish the Logistics Object to the server",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         # "example": {},
+            #     }
+            # },
         },
         409: {
             "description": "Logistics object with specified ID already exists",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         # "example": {},
+            #     }
+            # },
         },
         415: {
             "description": "Unsupported Content Type",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         # "example": {},
+            #     }
+            # },
         },
         500: {
             "description": "Internal Server Error",
-            # "headers": LOGISTICS_OBJECTS_RESPONSE_HEADERS,
+            # "content": {
+            #     "application/ld+json": {
+            #         "schema": {"$ref": "#/components/schemas/Error"},
+            #         # "example": {},
+            #     }
+            # },
         },
     },
 )
@@ -74,6 +114,7 @@ def receive_logistics_object(
             "application/ld+json": {"value": "application/ld+json"},
         },
     ),
+    # _doc_body: LogisticsObject = Body(...),
     logistics_object: LogisticsObject = Depends(LogisticsObject.from_graph),
 ):
     debug(logistics_object.iri)
