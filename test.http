@@ -120,3 +120,38 @@ Host: localhost:8000
     "target": "http://localhost:8000/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
     "status": "RFI"
 }
+
+###
+
+POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c/logistics-events HTTP/1.1
+Host: localhost:8000
+Content-Type: application/ld+json
+
+{
+  "@context": {
+    "cargo": "https://onerecord.iata.org/ns/cargo#"
+  },
+  "@type": "cargo:LogisticsEvent",
+  "cargo:creationDate": {
+    "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+    "@value": "2025-12-18T22:33:45.305820+00:00"
+  },
+  "cargo:eventCode": {
+    "@type": "cargo:CodeListElement",
+    "cargo:code": "RFI",
+    "cargo:codeListName": "Request for information"
+  },
+  "cargo:eventDate": {
+    "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+    "@value": "2025-12-18T22:33:45.306067+00:00"
+  },
+  "cargo:eventName": "Request for information",
+  "cargo:eventTimeType": {
+    "@id": "cargo:ACTUAL",
+    "@type": "cargo:EventTimeType"
+  },
+  "cargo:partialEventIndicator": {
+    "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+    "@value": false
+  }
+}

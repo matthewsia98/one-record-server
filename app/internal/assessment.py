@@ -109,7 +109,7 @@ async def create_assessment(assessment: Assessment):
 
     FRAME = {
         "@context": {
-            "cargo": CARGO._NS,
+            "cargo": str(CARGO._NS),
         },
         "@type": str(CARGO.LogisticsEvent),
         "@embed": "@always",

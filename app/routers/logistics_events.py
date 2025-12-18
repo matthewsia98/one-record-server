@@ -4,7 +4,6 @@ from fastapi.params import Depends
 from rdflib import Graph
 
 from app.dependencies.graph import parse_graph
-from app.models.common import IRI
 
 router = APIRouter()
 
@@ -14,7 +13,7 @@ router = APIRouter()
     tags=["logistics-events"],
 )
 async def receive_logistics_event(
-    logistics_object_id: IRI,
+    logistics_object_id: str,
     g: Graph = Depends(parse_graph),
 ):
     debug(logistics_object_id)
