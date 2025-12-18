@@ -4,8 +4,8 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/subscriptions/
 
 import rdflib.util
 from fastapi import APIRouter, Header, Query, Response, status
-from pydantic import AnyUrl
 
+from app.models.common import IRI
 from app.models.subscription import Subscription
 
 router = APIRouter()
@@ -13,11 +13,17 @@ router = APIRouter()
 SUBSCRIPTIONS_RESPONSE_HEADERS = {
     "Content-Type": {
         "description": "The content type that is contained with the HTTP body.",
-        "schema": {"type": "string"},
+        "schema": {
+            "type": "string",
+            "example": "application/ld+json",
+        },
     },
     "Content-Language": {
         "description": "Describes the language(s) for which the requested resource is intended.",
-        "schema": {"type": "string"},
+        "schema": {
+            "type": "string",
+            "example": "en-US",
+        },
     },
 }
 
@@ -155,13 +161,13 @@ async def get_subscription_info(
         )
 
     subscription = Subscription(
-        id=AnyUrl(
+        id=IRI(
             "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185"
         ),
-        subscriber=AnyUrl(
+        subscriber=IRI(
             "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
         ),
-        topic_type=AnyUrl(topic_type),
+        topic_type=IRI(topic_type),
         topic=topic,
     )
 

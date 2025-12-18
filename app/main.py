@@ -3,10 +3,16 @@ from fastapi import (
 )
 
 from app.internal import testing
-from app.routers import logistics_objects, notifications, subscriptions
+from app.routers import (
+    logistics_objects,
+    notifications,
+    server_information,
+    subscriptions,
+)
 
 app = FastAPI()
 
+app.include_router(server_information.router)
 app.include_router(subscriptions.router)
 app.include_router(notifications.router)
 app.include_router(logistics_objects.router)

@@ -22,6 +22,13 @@ Accept: text/turtle; version=2.2.0
 
 ###
 
+GET / HTTP/1.1
+Host: localhost:8000
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+###
+
 GET /subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_IDENTIFIER&topic=https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
 Host: localhost:8000
 Accept: application/ld+json; version=2.2.0
