@@ -99,7 +99,7 @@ LOGISTICS_OBJECTS_RESPONSE_HEADERS = {
         },
     },
 )
-def receive_logistics_object(
+async def receive_logistics_object(
     accept: str = Header(
         alias="Accept",
         description="The content type in which the ONE Record client wants the HTTP response to be formatted in.",

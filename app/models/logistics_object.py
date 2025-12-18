@@ -5,10 +5,10 @@ from pydantic import BaseModel
 from rdflib import Graph
 
 from app.dependencies.graph import parse_graph
-from app.models.common import IRI
+from app.models.common import IRI, Graphable
 
 
-class LogisticsObject(BaseModel):
+class LogisticsObject(BaseModel, Graphable):
     iri: IRI
     graph: Graph
 

@@ -68,7 +68,7 @@ SERVER_INFORMATION_RESPONSE_HEADERS = {
         },
     },
 )
-def get_server_information(
+async def get_server_information(
     accept: str = Header(
         alias="Accept",
         description=" 	The content type that you want the HTTP response to be formatted in.",

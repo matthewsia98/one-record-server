@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Optional, override
 
+from fastapi import Depends
 from pydantic import (
     AnyUrl,
     BaseModel,
@@ -10,6 +11,7 @@ from pydantic import (
 )
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
+from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
@@ -51,8 +53,13 @@ class Subscription(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph) -> Subscription:
-        return Subscription()
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Subscription:
+        return Subscription(
+            id=IRI(""),
+            subscriber=IRI(""),
+            topic_type=IRI(""),
+            topic="",
+        )
 
     @override
     def to_graph(self) -> Graph:

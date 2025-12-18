@@ -1,6 +1,5 @@
 from devtools import debug
-from fastapi import APIRouter, Response, status
-from fastapi.params import Depends
+from fastapi import APIRouter, Depends, Response, status
 from rdflib import Graph
 
 from app.dependencies.graph import parse_graph

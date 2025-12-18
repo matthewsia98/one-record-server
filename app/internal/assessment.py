@@ -5,10 +5,11 @@ import aiohttp
 import orjson
 import pyld
 from devtools import debug
-from fastapi import APIRouter, Response, status
+from fastapi import APIRouter, Depends, Response, status
 from pydantic import BaseModel, field_validator
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
+from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
 from app.namespaces._CARGO import CARGO
 
@@ -34,7 +35,7 @@ class Assessment(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph) -> Assessment:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Assessment:
         raise NotImplementedError()
 
     @override
