@@ -130,9 +130,8 @@ class ServerInformation(BaseModel, Graphable):
                     #     "@container": "@set",
                     # },
                 },
-                str(API.hasDataHolder): {
-                    "@embed": "@always",
-                },
+                "@type": str(API.ServerInformation),
+                "@embed": "@always",
             }
 
             framed = jsonld.frame(

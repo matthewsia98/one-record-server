@@ -1,4 +1,4 @@
-POST /_internal/echo HTTP/1.1
+POST /internal/echo HTTP/1.1
 Host: localhost:8000
 Content-Type: application/ld+json
 Accept: text/turtle; version=2.2.0
@@ -112,3 +112,11 @@ Accept: application/ld+json; version=2.2.0
 }
 
 ###
+
+POST /internal/assessment HTTP/1.1
+Host: localhost:8000
+
+{
+    "target": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+    "status": "RFI"
+}

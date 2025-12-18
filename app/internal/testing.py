@@ -14,7 +14,7 @@ from app.namespaces._CARGO import CARGO
 router = APIRouter()
 
 
-@router.post("/_internal/echo", tags=["internal"])
+@router.post("/internal/echo", tags=["internal"])
 async def echo(accept: str = Header(...), g: Graph = Depends(parse_graph)):
     response_type, _, version = accept.partition(";")
     response_type = response_type.strip()
