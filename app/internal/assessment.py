@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from typing import ClassVar, override
 
+import aiohttp
 import orjson
 import pyld
 from devtools import debug
@@ -98,7 +99,7 @@ router = APIRouter()
     status_code=status.HTTP_201_CREATED,
     response_class=Response,
 )
-def create_assessment(assessment: Assessment):
+async def create_assessment(assessment: Assessment):
     debug(assessment)
 
     g = assessment.to_graph()
@@ -115,6 +116,22 @@ def create_assessment(assessment: Assessment):
     }
     framed = pyld.jsonld.frame(orjson.loads(serialized), FRAME)
     compacted = pyld.jsonld.compact(framed, FRAME)
+
+    debug(compacted)
+
+    try:
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                str(assessment.target),
+                json=compacted,
+                headers={
+                    "Accept": "application/ld+json",
+                    "Content-Type": "application/ld+json",
+                },
+            ) as response:
+                debug(response.status)
+    except Exception as e:
+        debug(e)
 
     return Response(
         status_code=status.HTTP_201_CREATED,
