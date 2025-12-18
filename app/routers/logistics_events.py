@@ -11,6 +11,8 @@ router = APIRouter()
 @router.post(
     "/logistics-objects/{logistics_object_id}/logistics-events",
     tags=["logistics-events"],
+    status_code=status.HTTP_204_NO_CONTENT,
+    response_class=Response,
 )
 async def receive_logistics_event(
     logistics_object_id: str,
