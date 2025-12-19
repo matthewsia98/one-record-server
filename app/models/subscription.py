@@ -33,7 +33,7 @@ def validate_topic_type(value: AnyUrl) -> AnyUrl:
 
 
 class Subscription(BaseModel, Graphable):
-    id: IRI
+    # id: IRI
     subscriber: IRI
     topic_type: IRI
     topic: str
@@ -57,7 +57,7 @@ class Subscription(BaseModel, Graphable):
     @classmethod
     def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Subscription:
         return Subscription(
-            id=IRI(""),
+            # id=IRI(""),
             subscriber=IRI(""),
             topic_type=IRI(""),
             topic="",
@@ -65,7 +65,8 @@ class Subscription(BaseModel, Graphable):
 
     @override
     def to_graph(self) -> Graph:
-        node = BNode(str(self.id))
+        # node = BNode(str(self.id))
+        node = BNode()
         g = Graph(bind_namespaces="none")
         g.bind("cargo", CARGO._NS)
         g.bind("api", API._NS)

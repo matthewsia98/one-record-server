@@ -209,3 +209,46 @@ Content-Type: application/ld+json
 Accept: application/ld+json
 
 ###
+
+POST /notifications HTTP/1.1
+Host: localhost:8000
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@graph": [
+        {
+            "@id": "http://localhost:8080/logistics-objects/0e55b840-af1a-4102-9868-70fb5a429f0f",
+            "@type": [
+                "https://onerecord.iata.org/ns/cargo#LogisticsObject",
+                "https://onerecord.iata.org/ns/cargo#Shipment"
+            ],
+            "https://onerecord.iata.org/ns/cargo#goodsDescription": "UPDATED SPARE PARTS"
+        },
+        {
+            "@id": "http://localhost:8080/logistics-objects/0e55b840-af1a-4102-9868-70fb5a429f0f/notifications/0c8c6bee-c738-4166-afcc-506ee00748c5",
+            "@type": "Notification",
+            "hasChangedProperty": {
+                "@id": "https://onerecord.iata.org/ns/cargo#goodsDescription"
+            },
+            "hasEventType": {
+                "@id": "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
+            },
+            "hasLogisticsObject": {
+                "@id": "http://localhost:8080/logistics-objects/0e55b840-af1a-4102-9868-70fb5a429f0f"
+            },
+            "hasLogisticsObjectType": {
+                "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+                "@value": "https://onerecord.iata.org/ns/cargo#LogisticsObject"
+            },
+            "isTriggeredBy": {
+                "@id": "http://localhost:8080/action-requests/9ca42fae-bcf6-43c8-a735-7a55c0b85b0f"
+            }
+        }
+    ],
+    "@context": {
+        "@vocab": "https://onerecord.iata.org/ns/api#"
+    }
+}
+
+###

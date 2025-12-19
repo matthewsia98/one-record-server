@@ -2,7 +2,7 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/subscriptions/
 """
 
-from fastapi import APIRouter, Header, Query, Response
+from fastapi import APIRouter, Header, Query, Request, Response
 
 from app.models.common import IRI
 from app.models.subscription import Subscription
@@ -107,6 +107,7 @@ SUBSCRIPTIONS_RESPONSE_HEADERS = {
     },
 )
 async def get_subscription_info(
+    request: Request,
     accept: str = Header(
         alias="Accept",
         description="The content type in which the ONE Record client wants the HTTP response formatted.",
@@ -162,13 +163,21 @@ async def get_subscription_info(
     serialization_format = "json-ld"
     response_type = "application/ld+json"
 
+    subscriber = "/".join(
+        [
+            str(request.base_url).rstrip("/"),
+            "logistics-objects/_data-holder",
+        ]
+    )
+
     subscription = Subscription(
-        id=IRI(
-            "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185"
-        ),
-        subscriber=IRI(
-            "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
-        ),
+        # id=IRI(
+        #     "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185"
+        # ),
+        # subscriber=IRI(
+        #     "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
+        # ),
+        subscriber=IRI(subscriber),
         topic_type=IRI(topic_type),
         topic=topic,
     )

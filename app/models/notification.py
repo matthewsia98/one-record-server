@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, Set, override
 
+from devtools import debug
 from fastapi import Depends
 from pydantic import BaseModel, Field
 from rdflib import RDF, Graph, Literal, URIRef
@@ -18,7 +19,7 @@ class NotificationMessage(BaseModel):
 
 
 class Notification(BaseModel, Graphable):
-    iri: IRI
+    # iri: IRI
     event_type: IRI
     has_logistics_object_type: Optional[str] = None
     has_logistics_object: Optional[IRI] = None
@@ -37,7 +38,7 @@ class Notification(BaseModel, Graphable):
         if subject is None:
             raise ValueError("No Notification found in the graph")
 
-        iri = IRI(str(subject))
+        # iri = IRI(str(subject))
 
         match graph.value(subject, API.hasEventType):
             case URIRef(has_event_type_value):
@@ -74,8 +75,14 @@ class Notification(BaseModel, Graphable):
                 case _:
                     continue
 
+        debug(event_type)
+        debug(has_logistics_object_type)
+        debug(has_logistics_object)
+        debug(triggered_by)
+        debug(changed_properties)
+
         return Notification(
-            iri=iri,
+            # iri=iri,
             event_type=event_type,
             has_logistics_object_type=has_logistics_object_type,
             has_logistics_object=has_logistics_object,
