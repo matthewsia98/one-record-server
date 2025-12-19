@@ -2,8 +2,7 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/subscriptions/
 """
 
-import rdflib.util
-from fastapi import APIRouter, Header, Query, Response, status
+from fastapi import APIRouter, Header, Query, Response
 
 from app.models.common import IRI
 from app.models.subscription import Subscription
@@ -145,20 +144,23 @@ async def get_subscription_info(
         },
     ),
 ):
-    response_type, _, version = accept.partition(";")
-    response_type = response_type.strip()
-    version = version.strip()
+    # response_type, _, version = accept.partition(";")
+    # response_type = response_type.strip()
+    # version = version.strip()
 
-    serialization_format = None
-    for short, long in rdflib.util.FORMAT_MIMETYPE_MAP.items():
-        if long[0] == response_type:
-            serialization_format = short
-            break
-    if serialization_format is None:
-        return Response(
-            content="Unsupported Accept header",
-            status_code=status.HTTP_400_BAD_REQUEST,
-        )
+    # serialization_format = None
+    # for short, long in rdflib.util.FORMAT_MIMETYPE_MAP.items():
+    #     if long[0] == response_type:
+    #         serialization_format = short
+    #         break
+    # if serialization_format is None:
+    #     return Response(
+    #         content="Unsupported Accept header",
+    #         status_code=status.HTTP_400_BAD_REQUEST,
+    #     )
+
+    serialization_format = "json-ld"
+    response_type = "application/ld+json"
 
     subscription = Subscription(
         id=IRI(

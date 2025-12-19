@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import (
     FastAPI,
 )
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.dependencies.http_client import HttpClient
 from app.internal import assessment, testing
@@ -27,6 +28,16 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.state.http_client = http_client
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "*",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 app.include_router(server_information.router)
