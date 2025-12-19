@@ -51,7 +51,7 @@ class ServerInformation(BaseModel, Graphable):
             g.add(
                 (
                     subject,
-                    API.hasSupportedAPIVersion,
+                    API.hasSupportedApiVersion,
                     Literal(api_version, datatype=XSD.string),
                 )
             )
