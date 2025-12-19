@@ -159,3 +159,18 @@ Accept: application/ld+json; version=2.2.0
         "@id": "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
     }
 }
+
+###
+
+GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c?embedded=true HTTP/1.1
+Host: localhost:8000
+Accept: application/ld+json; version=2.2.0
+
+###
+
+GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c?at=20190926T075830Z HTTP/1.1
+Host: localhost:8000
+Content-Type: application/ld+json
+Accept: application/ld+json
+
+###

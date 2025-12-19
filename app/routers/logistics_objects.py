@@ -2,10 +2,14 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/logistics-objects/
 """
 
+from datetime import datetime
+from typing import Optional
+
 from devtools import debug
-from fastapi import APIRouter, Depends, Header, Response, status
+from fastapi import APIRouter, Depends, Header, Query, Response, status
 from rdflib import RDF, URIRef
 
+from app.dependencies.datetime import parse_datetime_param
 from app.models.logistics_object import LogisticsObject
 from app.namespaces._CARGO import CARGO
 
@@ -135,4 +139,30 @@ async def receive_logistics_object(
 
     return Response(
         status_code=status.HTTP_201_CREATED,
+    )
+
+
+@router.get(
+    "/logistics-objects/{logistics_object_id}",
+    tags=["logistics-objects"],
+)
+async def get_logistics_object(
+    logistics_object_id: str,
+    embedded: bool = Query(
+        default=False,
+        description="Optional parameter that can be used to request an embedded version of a Logistics Object, if the parameter is not set, a linked version of the Logistics Object is returned",
+    ),
+    at: Optional[datetime] = Depends(
+        parse_datetime_param(
+            param_name="at",
+            description="Optional parameter that can be used to request a historical version of Logistics Object, if the parameter is not set, the latest version is returned",
+        )
+    ),
+):
+    debug(logistics_object_id)
+    debug(embedded)
+    debug(at)
+
+    return Response(
+        status_code=status.HTTP_200_OK,
     )

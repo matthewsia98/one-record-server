@@ -2,9 +2,11 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/notifications/
 """
 
+from aiohttp import ClientSession
 from devtools import debug
 from fastapi import APIRouter, Depends, Header, Response, status
 
+from app.dependencies.http_client import get_http_client
 from app.models.notification import Notification
 
 router = APIRouter()
@@ -100,8 +102,22 @@ async def receive_notification(
     ),
     # _doc_body: Notification = Body(...),
     notification: Notification = Depends(Notification.from_graph),
+    http_client: ClientSession = Depends(get_http_client),
 ):
     debug(notification)
+
+    # Go get the logistics object
+    async with http_client:
+        async with http_client.get(
+            str(notification.has_logistics_object),
+            params={
+                "embedded": True,
+            },
+            headers={
+                "Accept": "application/ld+json",
+            },
+        ) as response:
+            debug(response.status)
 
     return Response(
         status_code=status.HTTP_204_NO_CONTENT,
