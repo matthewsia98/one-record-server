@@ -107,17 +107,20 @@ async def receive_notification(
     debug(notification)
 
     # Go get the logistics object
-    async with http_client:
-        async with http_client.get(
-            str(notification.has_logistics_object),
-            params={
-                "embedded": True,
-            },
-            headers={
-                "Accept": "application/ld+json",
-            },
-        ) as response:
-            debug(response.status)
+    try:
+        async with http_client:
+            async with http_client.get(
+                str(notification.has_logistics_object),
+                params={
+                    "embedded": "true",
+                },
+                headers={
+                    "Accept": "application/ld+json",
+                },
+            ) as response:
+                debug(response.status)
+    except Exception as e:
+        debug(e)
 
     return Response(
         status_code=status.HTTP_204_NO_CONTENT,
