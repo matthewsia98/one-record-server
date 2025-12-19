@@ -83,14 +83,21 @@ class Notification(BaseModel, Graphable):
         debug(triggered_by)
         debug(changed_properties)
 
-        return Notification(
-            # iri=iri,
-            event_type=event_type,
-            has_logistics_object_type=has_logistics_object_type,
-            has_logistics_object=has_logistics_object,
-            triggered_by=triggered_by,
-            changed_properties=changed_properties,
-        )
+        try:
+            notification = Notification(
+                # iri=iri,
+                event_type=event_type,
+                has_logistics_object_type=has_logistics_object_type,
+                has_logistics_object=has_logistics_object,
+                triggered_by=triggered_by,
+                changed_properties=changed_properties,
+            )
+            debug("""=== Created Notification ===""")
+
+            return notification
+        except pydantic.ValidationError as e:
+            debug(e.errors())
+            raise
 
     @override
     def to_graph(self) -> Graph:

@@ -2,6 +2,7 @@
 Docstring for app.dependencies.graph
 """
 
+import orjson
 from devtools import debug
 from fastapi import Header, HTTPException, Request, status
 from rdflib import Graph
@@ -27,7 +28,7 @@ async def parse_graph(
     #     )
 
     body_bytes = await request.body()
-    debug(bytes)
+    debug(orjson.loads(body_bytes.decode()))
 
     g = Graph()
 

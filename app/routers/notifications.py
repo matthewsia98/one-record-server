@@ -4,7 +4,7 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/notifications/
 
 from aiohttp import ClientSession
 from devtools import debug
-from fastapi import APIRouter, Depends, Header, Response, status
+from fastapi import APIRouter, Depends, Response, status
 
 from app.dependencies.http_client import get_http_client
 from app.models.notification import Notification
@@ -95,15 +95,16 @@ router = APIRouter()
     },
 )
 async def receive_notification(
-    accept: str = Header(
-        alias="Accept",
-        description="The content type in which the ONE Record client wants the HTTP response formatted.",
-        example="application/ld+json",
-    ),
+    # accept: str = Header(
+    #     alias="Accept",
+    #     description="The content type in which the ONE Record client wants the HTTP response formatted.",
+    #     example="application/ld+json",
+    # ),
     # _doc_body: Notification = Body(...),
     notification: Notification = Depends(Notification.from_graph),
     http_client: ClientSession = Depends(get_http_client),
 ):
+    debug("=== Notification Received ===")
     debug(notification)
 
     # Go get the logistics object
