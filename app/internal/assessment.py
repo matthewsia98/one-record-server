@@ -12,6 +12,7 @@ from pyld import jsonld
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
 from app.dependencies.graph import parse_graph
+from app.dependencies.http_client import get_http_client
 from app.models.common import IRI, Graphable
 from app.models.error import Error
 from app.namespaces._API import API
@@ -127,7 +128,10 @@ router = APIRouter()
     status_code=status.HTTP_201_CREATED,
     response_class=Response,
 )
-async def create_assessment(assessment: Assessment):
+async def create_assessment(
+    assessment: Assessment,
+    http_client: aiohttp.ClientSession = Depends(get_http_client),
+):
     debug(assessment)
 
     g = assessment.to_graph()
@@ -148,14 +152,16 @@ async def create_assessment(assessment: Assessment):
     debug(compacted)
 
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                "/".join(
-                    [
-                        str(assessment.target).rstrip("/"),
-                        "logistics-events",
-                    ]
-                ),
+        url = "/".join(
+            [
+                str(assessment.target).rstrip("/"),
+                "logistics-events",
+            ]
+        )
+        debug(url)
+        async with http_client:
+            async with http_client.post(
+                url,
                 json=compacted,
                 headers={
                     "Accept": "application/ld+json",

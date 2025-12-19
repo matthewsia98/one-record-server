@@ -1,8 +1,10 @@
-import pyld
+from contextlib import asynccontextmanager
+
 from fastapi import (
     FastAPI,
 )
 
+from app.dependencies.http_client import HttpClient
 from app.internal import assessment, testing
 from app.routers import (
     logistics_events,
@@ -12,9 +14,20 @@ from app.routers import (
     subscriptions,
 )
 
-pyld.jsonld.set_document_loader(pyld.jsonld.dummy_document_loader())
+http_client = HttpClient()
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    http_client.start()
+    yield
+    await http_client.stop()
+
+
+app = FastAPI(lifespan=lifespan)
+
+app.state.http_client = http_client
+
 
 app.include_router(server_information.router)
 app.include_router(subscriptions.router)

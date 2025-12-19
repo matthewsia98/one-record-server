@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, Header, Response, status
 from rdflib import RDF, URIRef
 
 from app.models.logistics_object import LogisticsObject
+from app.namespaces._CARGO import CARGO
 
 router = APIRouter()
 
@@ -118,12 +119,19 @@ async def receive_logistics_object(
     logistics_object: LogisticsObject = Depends(LogisticsObject.from_graph),
 ):
     debug(logistics_object.iri)
-    type = next(
-        logistics_object.graph.objects(URIRef(str(logistics_object.iri)), RDF.type),
-        None,
-    )
-    debug(type)
     debug(logistics_object.graph.serialize())
+
+    logistics_object_type = logistics_object.graph.value(
+        URIRef(str(logistics_object.iri)), RDF.type
+    )
+
+    match logistics_object_type:
+        case CARGO.Shipment:
+            debug("It's a shipment")
+        case CARGO.Piece:
+            debug("It's a piece")
+        case _:
+            debug(logistics_object_type)
 
     return Response(
         status_code=status.HTTP_201_CREATED,

@@ -123,35 +123,39 @@ Host: localhost:8000
 
 ###
 
-POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c/logistics-events HTTP/1.1
+POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events HTTP/1.1
 Host: localhost:8000
-Content-Type: application/ld+json
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
 
 {
-  "@context": {
-    "cargo": "https://onerecord.iata.org/ns/cargo#"
-  },
-  "@type": "cargo:LogisticsEvent",
-  "cargo:creationDate": {
-    "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
-    "@value": "2025-12-18T22:33:45.305820+00:00"
-  },
-  "cargo:eventCode": {
-    "@type": "cargo:CodeListElement",
-    "cargo:code": "RFI",
-    "cargo:codeListName": "Request for information"
-  },
-  "cargo:eventDate": {
-    "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
-    "@value": "2025-12-18T22:33:45.306067+00:00"
-  },
-  "cargo:eventName": "Request for information",
-  "cargo:eventTimeType": {
-    "@id": "cargo:ACTUAL",
-    "@type": "cargo:EventTimeType"
-  },
-  "cargo:partialEventIndicator": {
-    "@type": "http://www.w3.org/2001/XMLSchema#boolean",
-    "@value": false
-  }
+    "@context": {
+        "cargo": "https://onerecord.iata.org/ns/cargo#"
+    },
+    "@type": "cargo:LogisticsEvent",
+    "cargo:creationDate": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2023-04-01T10:38:01.000Z"
+    },
+    "cargo:eventDate": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2023-04-01T10:38:01.000Z"
+    },
+    "cargo:eventCode": {
+        "@id": "https://onerecord.iata.org/ns/code-lists/StatusCode#DEP"
+    },
+    "cargo:eventName": "Consignment departed on a specific flight",
+    "cargo:eventTimeType": {
+        "@id": "cargo:ACTUAL",
+        "@type": "cargo:EventTimeType"
+    },
+    "cargo:partialEventIndicator": false,
+    "cargo:eventFor": {
+        "@type": "cargo:Shipment",
+        "@id": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c"
+    },
+    "cargo:recordingOrganization": {
+        "@type": "cargo:Company",
+        "@id": "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
+    }
 }
