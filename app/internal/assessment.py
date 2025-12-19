@@ -1,16 +1,18 @@
 from datetime import datetime, timezone
-from typing import ClassVar, override
+from typing import ClassVar, Set, override
 
 import aiohttp
 import orjson
 from devtools import debug
 from fastapi import APIRouter, Depends, Response, status
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 from pyld import jsonld
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
 from app.dependencies.graph import parse_graph
-from app.models.common import IRI, Graphable
+from app.modelfs.common import IRI, Graphable
+from app.models.error import Error
+from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
 
 
@@ -24,6 +26,7 @@ class Assessment(BaseModel, Graphable):
 
     target: IRI
     status: str
+    errors: Set[str] = Field(default_factory=set)
 
     @field_validator("status")
     def check_status(cls, v: str) -> str:
@@ -38,8 +41,7 @@ class Assessment(BaseModel, Graphable):
     def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Assessment:
         raise NotImplementedError()
 
-    @override
-    def to_graph(self) -> Graph:
+    def to_logistics_event_graph(self) -> Graph:
         g = Graph()
 
         node = BNode()
@@ -89,6 +91,29 @@ class Assessment(BaseModel, Graphable):
         g.add((node, CARGO.partialEventIndicator, Literal(False, datatype=XSD.boolean)))
 
         return g
+
+    def to_verification_graph(self) -> Graph:
+        g = Graph()
+
+        node = BNode()
+
+        g.add((node, RDF.type, CARGO.Verification))
+
+        g.add((node, API.hasLogisticsObject, URIRef(str(self.target))))
+
+        for error in self.errors:
+            error_graph = Error(title=error).to_graph()
+            g += error_graph
+            error_node = next(error_graph.subjects())
+            g.add((node, CARGO.hasError, error_node))
+
+        g.add((node, API.hasRevision, Literal(1, datatype=XSD.positiveInteger)))
+
+        return g
+
+    @override
+    def to_graph(self) -> Graph:
+        return self.to_logistics_event_graph()
 
 
 router = APIRouter()
