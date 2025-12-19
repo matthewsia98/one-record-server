@@ -7,7 +7,7 @@ from fastapi import Query
 def parse_datetime_param(
     param_name: str,
     description: Optional[str] = None,
-) -> datetime:
+):
     def wrapper(
         value: str = Query(
             default=None,
@@ -15,7 +15,7 @@ def parse_datetime_param(
             description=description,
             example="20190926T075830Z",
         ),
-    ):
+    ) -> Optional[datetime]:
         if value is None:
             return None
 

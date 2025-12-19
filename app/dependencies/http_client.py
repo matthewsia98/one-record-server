@@ -1,9 +1,11 @@
+from typing import Optional
+
 from aiohttp import ClientSession
 from fastapi import Request
 
 
 class HttpClient:
-    session: ClientSession = None
+    session: Optional[ClientSession] = None
 
     def start(self):
         self.session = ClientSession()
