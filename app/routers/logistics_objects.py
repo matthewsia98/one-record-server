@@ -3,7 +3,6 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/logistics-objects/
 """
 
 from datetime import datetime
-from typing import Optional
 
 from devtools import debug
 from fastapi import APIRouter, Depends, Header, Query, Response, status
@@ -152,7 +151,7 @@ async def get_logistics_object(
         default=False,
         description="Optional parameter that can be used to request an embedded version of a Logistics Object, if the parameter is not set, a linked version of the Logistics Object is returned",
     ),
-    at: Optional[datetime] = Depends(
+    at: datetime = Depends(
         parse_datetime_param(
             param_name="at",
             description="Optional parameter that can be used to request a historical version of Logistics Object, if the parameter is not set, the latest version is returned",
