@@ -1,3 +1,4 @@
+import pyld
 from fastapi import (
     FastAPI,
 )
@@ -10,6 +11,8 @@ from app.routers import (
     server_information,
     subscriptions,
 )
+
+pyld.jsonld.set_document_loader(pyld.jsonld.dummy_document_loader())
 
 app = FastAPI()
 

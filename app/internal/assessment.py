@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime, timezone
 from typing import ClassVar, Set, override
 
@@ -10,7 +12,7 @@ from pyld import jsonld
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
 from app.dependencies.graph import parse_graph
-from app.modelfs.common import IRI, Graphable
+from app.models.common import IRI, Graphable
 from app.models.error import Error
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
