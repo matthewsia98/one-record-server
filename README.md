@@ -41,7 +41,7 @@ docker build -t one-record-server .
 ```
 
 ```
-docker run -p 8000:80 one-record-server
+docker run -p 8000:8000 one-record-server
 ```
 
 ```

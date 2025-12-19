@@ -10,11 +10,11 @@ dependencies = [
     "orjson>=3.11.5",
     "pyld>=2.0.4",
     "rdflib>=7.5.0",
+    "devtools>=0.12.2",
 ]
 
 [dependency-groups]
 dev = [
-    "devtools>=0.12.2",
     "mypy>=1.19.1",
     "pre-commit>=4.5.1",
 ]

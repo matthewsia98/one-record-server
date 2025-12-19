@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, Set, override
 
+import pydantic
 from devtools import debug
 from fastapi import Depends
 from pydantic import BaseModel, Field
@@ -75,6 +76,7 @@ class Notification(BaseModel, Graphable):
                 case _:
                     continue
 
+        debug(pydantic.__version__)
         debug(event_type)
         debug(has_logistics_object_type)
         debug(has_logistics_object)
