@@ -3,10 +3,10 @@ from typing import ClassVar, override
 
 import aiohttp
 import orjson
-import pyld
 from devtools import debug
 from fastapi import APIRouter, Depends, Response, status
 from pydantic import BaseModel, field_validator
+from pyld import jsonld
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 
 from app.dependencies.graph import parse_graph
@@ -115,8 +115,8 @@ async def create_assessment(assessment: Assessment):
         "@type": str(CARGO.LogisticsEvent),
         "@embed": "@always",
     }
-    framed = pyld.jsonld.frame(orjson.loads(serialized), FRAME)
-    compacted = pyld.jsonld.compact(framed, FRAME)
+    framed = jsonld.frame(orjson.loads(serialized), FRAME)
+    compacted = jsonld.compact(framed, FRAME)
 
     debug(compacted)
 
