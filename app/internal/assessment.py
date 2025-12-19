@@ -159,16 +159,15 @@ async def create_assessment(
             ]
         )
         debug(url)
-        async with http_client:
-            async with http_client.post(
-                url,
-                json=compacted,
-                headers={
-                    "Accept": "application/ld+json",
-                    "Content-Type": "application/ld+json",
-                },
-            ) as response:
-                debug(response.status)
+        async with http_client.post(
+            url,
+            json=compacted,
+            headers={
+                "Accept": "application/ld+json",
+                "Content-Type": "application/ld+json",
+            },
+        ) as response:
+            debug(response.status)
     except Exception as e:
         debug(e)
 

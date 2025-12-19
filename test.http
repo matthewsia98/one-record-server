@@ -123,6 +123,41 @@ Host: localhost:8000
 
 ###
 
+POST /notifications HTTP/1.1
+Host: localhost:8000
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "api": "https://onerecord.iata.org/ns/api#"
+    },
+    "@type": "api:Notification",
+    "api:hasEventType": {
+        "@id": "api:LOGISTICS_OBJECT_CREATED"
+    },
+    "api:hasLogisticsObject": {
+        "@id": "http://localhost:8000/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
+    },
+    "api:hasLogisticsObjectType": {
+        "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "@value": "https://onerecord.iata.org/ns/cargo#Piece"
+    },
+    "api:isTriggeredBy": {
+        "@id": "https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed"
+    },
+    "api:hasChangedProperty": [
+        {
+            "@id": "https://onerecord.iata.org/ns/cargo#coload"
+        },
+        {
+            "@id": "https://onerecord.iata.org/ns/cargo#specialHandlingCodes"
+        }
+    ]
+}
+
+###
+
 POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events HTTP/1.1
 Host: localhost:8000
 Content-Type: application/ld+json; version=2.2.0
