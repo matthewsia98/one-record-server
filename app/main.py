@@ -14,6 +14,10 @@ from app.routers import (
     server_information,
     subscriptions,
 )
+import pyld.jsonld
+
+
+pyld.jsonld.set_document_loader(pyld.jsonld.dummy_document_loader())
 
 http_client = HttpClient()
 
