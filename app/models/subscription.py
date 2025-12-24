@@ -5,7 +5,6 @@ from typing import Optional, Self, override
 
 from fastapi import Depends
 from pydantic import (
-    AnyUrl,
     BaseModel,
     SerializationInfo,
     field_validator,
@@ -17,19 +16,6 @@ from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
-
-
-def validate_topic_type(value: AnyUrl) -> AnyUrl:
-    print(f"Validating topic_type: {value}")
-    topic_type = URIRef(str(value))
-    if topic_type not in {
-        API.LOGISTICS_OBJECT_TYPE,
-        API.LOGISTICS_OBJECT_IDENTIFIER,
-    }:
-        raise ValueError(
-            f"topic_type must be either {API.LOGISTICS_OBJECT_TYPE} or {API.LOGISTICS_OBJECT_IDENTIFIER}"
-        )
-    return AnyUrl(str(topic_type))
 
 
 class Subscription(BaseModel, Graphable):

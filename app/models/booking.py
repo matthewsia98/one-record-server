@@ -1,21 +1,16 @@
-from typing import Self, Set, override
+from typing import List, Self, override
 
 from fastapi import Depends
 from pydantic import BaseModel
 from rdflib import Graph
 
 from app.dependencies.graph import parse_graph
+from app.models.activity_sequence import ActivitySequence
 from app.models.common import Graphable
-from app.models.party import Party
-from app.models.piece import Piece
-from app.models.value import Value
 
 
-class Shipment(BaseModel, Graphable):
-    pieces: Set[Piece]
-    total_gross_weight: Value
-    involved_parties: Set[Party]
-    goods_description: str
+class Booking(BaseModel, Graphable):
+    activity_sequences: List[ActivitySequence]
 
     @override
     def to_graph(self) -> Graph:

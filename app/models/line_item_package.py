@@ -6,16 +6,14 @@ from rdflib import Graph
 
 from app.dependencies.graph import parse_graph
 from app.models.common import Graphable
-from app.models.party import Party
 from app.models.piece import Piece
 from app.models.value import Value
 
 
-class Shipment(BaseModel, Graphable):
-    pieces: Set[Piece]
-    total_gross_weight: Value
-    involved_parties: Set[Party]
-    goods_description: str
+class LineItemPackage(BaseModel, Graphable):
+    package_gross_weight: Value
+    package_volume: Value
+    piece_references: Set[Piece]
 
     @override
     def to_graph(self) -> Graph:

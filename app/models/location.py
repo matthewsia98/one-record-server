@@ -5,17 +5,16 @@ from pydantic import BaseModel
 from rdflib import Graph
 
 from app.dependencies.graph import parse_graph
+from app.models.address import Address
+from app.models.code_list_element import CodeListElement
 from app.models.common import Graphable
-from app.models.party import Party
-from app.models.piece import Piece
-from app.models.value import Value
 
 
-class Shipment(BaseModel, Graphable):
-    pieces: Set[Piece]
-    total_gross_weight: Value
-    involved_parties: Set[Party]
-    goods_description: str
+class Location(BaseModel, Graphable):
+    address: Address
+    location_codes: Set[CodeListElement]
+    location_name: str
+    location_type: str
 
     @override
     def to_graph(self) -> Graph:
