@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import ClassVar, Set, override
+from typing import ClassVar, Self, Set, override
 
 import aiohttp
 import orjson
@@ -41,7 +41,7 @@ class Assessment(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Assessment:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
         raise NotImplementedError()
 
     def to_logistics_event_graph(self) -> Graph:

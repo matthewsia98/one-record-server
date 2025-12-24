@@ -1,5 +1,5 @@
 POST /internal/echo HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json
 Accept: text/turtle; version=2.2.0
 
@@ -23,20 +23,25 @@ Accept: text/turtle; version=2.2.0
 ###
 
 GET / HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 
 ###
 
+GET /logistics-objects/_data-holder HTTP/1.1
+Host: {{host}}:{{port}}
+
+###
+
 GET /subscriptions?topicType=https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_IDENTIFIER&topic=https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Accept: application/ld+json; version=2.2.0
 
 ###
 
 POST /notifications HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 
@@ -71,7 +76,7 @@ Accept: application/ld+json; version=2.2.0
 ###
 
 POST /logistics-objects HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 
@@ -94,7 +99,7 @@ Accept: application/ld+json; version=2.2.0
 ###
 
 POST /logistics-objects HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 
@@ -114,17 +119,17 @@ Accept: application/ld+json; version=2.2.0
 ###
 
 POST /internal/assessment HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 
 {
-    "target": "http://localhost:8000/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+    "target": "http://{{host}}:{{port}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
     "status": "RFI"
 }
 
 ###
 
 POST /notifications HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 
@@ -137,7 +142,7 @@ Accept: application/ld+json; version=2.2.0
         "@id": "api:LOGISTICS_OBJECT_CREATED"
     },
     "api:hasLogisticsObject": {
-        "@id": "http://localhost:8000/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
+        "@id": "http://{{host}}:{{port}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
     },
     "api:hasLogisticsObjectType": {
         "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
@@ -159,7 +164,7 @@ Accept: application/ld+json; version=2.2.0
 ###
 
 POST /logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 
@@ -198,20 +203,20 @@ Accept: application/ld+json; version=2.2.0
 ###
 
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c?embedded=true HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Accept: application/ld+json; version=2.2.0
 
 ###
 
 GET /logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c?at=20190926T075830Z HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json
 Accept: application/ld+json
 
 ###
 
 POST /notifications HTTP/1.1
-Host: localhost:8000
+Host: {{host}}:{{port}}
 Content-Type: application/ld+json; version=2.2.0
 Accept: application/ld+json; version=2.2.0
 

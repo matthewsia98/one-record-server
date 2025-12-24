@@ -26,6 +26,6 @@ extend-select = [
 
 [[tool.mypy.overrides]]
 module = [
-    "pyld",
+    "pyld.*",
 ]
 ignore_missing_imports = true

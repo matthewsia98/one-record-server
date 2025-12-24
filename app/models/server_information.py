@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Set, override
+from typing import Self, Set, override
 
 import orjson
 import rdflib
@@ -87,8 +87,8 @@ class ServerInformation(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> ServerInformation:
-        raise NotImplementedError("from_graph method is not implemented yet")
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
+        raise NotImplementedError()
 
     @model_serializer(mode="plain")
     def serialize_model(self, info: SerializationInfo):

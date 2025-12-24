@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Set, override
+from typing import Optional, Self, Set, override
 
 from fastapi import Depends
 from pydantic import BaseModel, Field
@@ -30,7 +30,7 @@ class ErrorDetail(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> ErrorDetail:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
         raise NotImplementedError()
 
 
@@ -57,7 +57,7 @@ class Error(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Error:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
         raise NotImplementedError()
 
     @classmethod

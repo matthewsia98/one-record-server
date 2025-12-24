@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Optional, Set, override
+from typing import Optional, Self, Set, override
 
 import pydantic
 from devtools import debug
@@ -29,7 +29,7 @@ class Notification(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Notification:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
         """
         Construct a Notification instance from an RDF graph.
         Assumes there is exactly one Notification in the graph.
@@ -84,7 +84,7 @@ class Notification(BaseModel, Graphable):
         debug(changed_properties)
 
         try:
-            notification = Notification(
+            notification = cls(
                 # iri=iri,
                 event_type=event_type,
                 has_logistics_object_type=has_logistics_object_type,

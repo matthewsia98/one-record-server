@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, override
+from typing import Optional, Self, override
 
 from fastapi import Depends
 from pydantic import (
@@ -55,8 +55,8 @@ class Subscription(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Subscription:
-        return Subscription(
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
+        return cls(
             # id=IRI(""),
             subscriber=IRI(""),
             topic_type=IRI(""),

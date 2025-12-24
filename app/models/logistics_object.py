@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import override
+from typing import Self, override
 
 from fastapi import Depends
 from pydantic import BaseModel
@@ -18,14 +18,14 @@ class LogisticsObject(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> LogisticsObject:
+    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
         subject = next(graph.subjects(), None)
         if subject is None:
             raise ValueError("No subject found in the graph")
 
         iri = IRI(str(subject))
 
-        return LogisticsObject(
+        return cls(
             iri=iri,
             graph=graph,
         )

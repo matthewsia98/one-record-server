@@ -5,11 +5,12 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/logistics-objects/
 from datetime import datetime
 
 from devtools import debug
-from fastapi import APIRouter, Depends, Header, Query, Response, status
+from fastapi import APIRouter, Depends, Header, Query, Request, Response, status
 from rdflib import RDF, URIRef
 
 from app.dependencies.datetime import parse_datetime_param
 from app.models.logistics_object import LogisticsObject
+from app.models.organization import Organization
 from app.namespaces._CARGO import CARGO
 
 router = APIRouter()
@@ -147,6 +148,7 @@ async def receive_logistics_object(
 )
 async def get_logistics_object(
     logistics_object_id: str,
+    request: Request,
     embedded: bool = Query(
         default=False,
         description="Optional parameter that can be used to request an embedded version of a Logistics Object, if the parameter is not set, a linked version of the Logistics Object is returned",
@@ -161,6 +163,23 @@ async def get_logistics_object(
     debug(logistics_object_id)
     debug(embedded)
     debug(at)
+
+    if logistics_object_id == "_data-holder":
+        g = Organization(name="ACME Corporation").to_graph()
+        g = g.skolemize(
+            authority=str(request.base_url),
+            basepath="logistics-objects/",
+        )
+
+        return Response(
+            status_code=status.HTTP_200_OK,
+            content=g.serialize(
+                format="json-ld",
+                context={
+                    "@vocab": CARGO._NS,
+                },
+            ),
+        )
 
     return Response(
         status_code=status.HTTP_200_OK,
