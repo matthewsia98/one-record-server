@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import Optional, Self, Set, override
 
-import pydantic
-from devtools import debug
 from fastapi import Depends
 from pydantic import BaseModel, Field
 from rdflib import RDF, Graph, Literal, URIRef
@@ -76,28 +74,14 @@ class Notification(BaseModel, Graphable):
                 case _:
                     continue
 
-        debug(pydantic.__version__)
-        debug(event_type)
-        debug(has_logistics_object_type)
-        debug(has_logistics_object)
-        debug(triggered_by)
-        debug(changed_properties)
-
-        try:
-            notification = cls(
-                # iri=iri,
-                event_type=event_type,
-                has_logistics_object_type=has_logistics_object_type,
-                has_logistics_object=has_logistics_object,
-                triggered_by=triggered_by,
-                changed_properties=changed_properties,
-            )
-            debug("""=== Created Notification ===""")
-
-            return notification
-        except pydantic.ValidationError as e:
-            debug(e.errors())
-            raise
+        return cls(
+            # iri=iri,
+            event_type=event_type,
+            has_logistics_object_type=has_logistics_object_type,
+            has_logistics_object=has_logistics_object,
+            triggered_by=triggered_by,
+            changed_properties=changed_properties,
+        )
 
     @override
     def to_graph(self) -> Graph:

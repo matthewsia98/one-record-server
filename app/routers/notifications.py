@@ -104,7 +104,6 @@ async def receive_notification(
     notification: Notification = Depends(Notification.from_graph),
     http_client: ClientSession = Depends(get_http_client),
 ):
-    debug("=== Notification Received ===")
     debug(notification)
 
     # Go get the logistics object
