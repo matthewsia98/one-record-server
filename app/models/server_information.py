@@ -7,7 +7,7 @@ import rdflib
 from fastapi import Depends
 from pydantic import BaseModel, Field, SerializationInfo, model_serializer
 from pyld import jsonld
-from rdflib import XSD, Graph, Literal, URIRef
+from rdflib import RDF, XSD, Graph, Literal, URIRef
 
 from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
@@ -88,7 +88,26 @@ class ServerInformation(BaseModel, Graphable):
     @override
     @classmethod
     def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
-        raise NotImplementedError()
+        subject = next(graph.subjects(RDF.type, API.ServerInformation))
+
+        has_data_holder: IRI
+        match graph.value(subject, API.hasDataHolder):
+            case URIRef(has_data_holder_value):
+                has_data_holder = IRI(str(has_data_holder_value))
+            case _:
+                raise ValueError("ServerInformation is missing hasDataHolder")
+
+        has_server_endpoint: IRI
+        match graph.value(subject, API.hasServerEndpoint):
+            case Literal(has_server_endpoint_value, datatype=XSD.anyURI):
+                has_server_endpoint = IRI(str(has_server_endpoint_value))
+            case _:
+                raise ValueError("ServerInformation is missing hasServerEndpoint")
+
+        return cls(
+            has_data_holder=has_data_holder,
+            has_server_endpoint=has_server_endpoint,
+        )
 
     @model_serializer(mode="plain")
     def serialize_model(self, info: SerializationInfo):
