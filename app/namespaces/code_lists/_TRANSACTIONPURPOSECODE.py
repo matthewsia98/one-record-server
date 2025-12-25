@@ -7,7 +7,7 @@ class TRANSACTIONPURPOSECODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:50.163767
+    Date: 2025-12-25 20:11:28.877320
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/TransactionPurposeCode#")

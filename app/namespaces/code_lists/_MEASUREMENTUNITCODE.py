@@ -7,7 +7,7 @@ class MEASUREMENTUNITCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:31.699427
+    Date: 2025-12-25 20:11:10.940209
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/MeasurementUnitCode#")

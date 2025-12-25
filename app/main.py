@@ -1,13 +1,10 @@
 from contextlib import asynccontextmanager
 
 import pyld.jsonld
-from fastapi import (
-    FastAPI,
-)
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.dependencies.http_client import HttpClient
-from app.internal import assessment, testing
 from app.routers import (
     logistics_events,
     logistics_objects,
@@ -15,6 +12,7 @@ from app.routers import (
     server_information,
     subscriptions,
 )
+from app.routers.internal import assessment, testing
 
 pyld.jsonld.set_document_loader(pyld.jsonld.dummy_document_loader())
 

@@ -16,6 +16,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 Path("app/namespaces").mkdir(parents=True, exist_ok=True)
 
 
+__INIT__ = """\
+from app.namespaces._API import API
+from app.namespaces._CARGO import CARGO
+from app.namespaces._CODELISTS import CODELISTS
+
+
+__all__ = [
+    API.__name__,
+    CARGO.__name__,
+    CODELISTS.__name__,
+]
+"""
+with open("app/namespaces/__init__.py", "w") as f:
+    f.write(__INIT__)
+
+
 subprocess.run(
     [
         "uv",
@@ -67,6 +83,7 @@ browser.quit()
 
 
 Path("app/namespaces/code_lists").mkdir(parents=True, exist_ok=True)
+Path("app/namespaces/code_lists/__init__.py").touch()
 
 
 response = requests.get("https://onerecord.iata.org/ns/code-lists/ontology.ttl")
@@ -122,22 +139,6 @@ class CODELISTS(DefinedNamespace):
 '''
 with open("app/namespaces/_CODELISTS.py", "w") as f:
     f.write(_CODELISTS)
-
-
-__INIT__ = """\
-from app.namespaces._API import API
-from app.namespaces._CARGO import CARGO
-from app.namespaces._CODELISTS import CODELISTS
-
-
-__all__ = [
-    API.__name__,
-    CARGO.__name__,
-    CODELISTS.__name__,
-]
-"""
-with open("app/namespaces/__init__.py", "w") as f:
-    f.write(__INIT__)
 
 
 subprocess.run(

@@ -7,7 +7,7 @@ class SPACEALLOCATIONCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:47.723909
+    Date: 2025-12-25 20:11:26.544725
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/SpaceAllocationCode#")

@@ -7,7 +7,7 @@ class COMMODITYCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:25.873563
+    Date: 2025-12-25 20:11:05.379715
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/CommodityCode#")

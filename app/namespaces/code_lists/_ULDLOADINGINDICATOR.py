@@ -7,7 +7,7 @@ class ULDLOADINGINDICATOR(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:53.435546
+    Date: 2025-12-25 20:11:32.008527
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/ULDLoadingIndicator#")

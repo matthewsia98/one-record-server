@@ -7,7 +7,7 @@ class SIGNATORYROLE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:46.101334
+    Date: 2025-12-25 20:11:25.009404
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/SignatoryRole#")

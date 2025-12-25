@@ -7,7 +7,7 @@ class PARTICIPANTIDENTIFIER(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 20:03:36.538363
+    Date: 2025-12-25 20:11:15.661197
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/ParticipantIdentifier#")
