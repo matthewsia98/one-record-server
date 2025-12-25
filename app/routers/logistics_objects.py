@@ -6,7 +6,7 @@ from datetime import datetime
 
 from devtools import debug
 from fastapi import APIRouter, Depends, Header, Query, Request, Response, status
-from rdflib import RDF, URIRef
+from rdflib import RDF
 
 from app.dependencies.datetime import parse_datetime_param
 from app.dependencies.graph import parse_graph_as
@@ -128,9 +128,9 @@ async def receive_logistics_object(
     debug(logistics_object.iri)
     debug(logistics_object.graph.serialize())
 
-    logistics_object_type = logistics_object.graph.value(
-        URIRef(str(logistics_object.iri)), RDF.type
-    )
+    subject = next(logistics_object.graph.subjects())
+
+    logistics_object_type = logistics_object.graph.value(subject, RDF.type)
 
     match logistics_object_type:
         case CARGO.Shipment:
