@@ -124,12 +124,16 @@ with open("app/namespaces/_CODELISTS.py", "w") as f:
     f.write(_CODELISTS)
 
 
-__INIT__ = f"""\
-{"\n".join(["from app.namespaces.code_lists._" + object_id + " import " + object_id for _, object_id in object_ids])}
+__INIT__ = """\
+from app.namespaces._API import API
+from app.namespaces._CARGO import CARGO
+from app.namespaces._CODELISTS import CODELISTS
 
 
 __all__ = [
-    {",\n    ".join([object_id + ".__name__" for _, object_id in object_ids])},
+    API.__name__,
+    CARGO.__name__,
+    CODELISTS.__name__,
 ]
 """
 with open("app/namespaces/__init__.py", "w") as f:

@@ -7,7 +7,7 @@ class RATINGSTYPE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 19:57:21.142528
+    Date: 2025-12-25 20:03:40.530282
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/RatingsType#")

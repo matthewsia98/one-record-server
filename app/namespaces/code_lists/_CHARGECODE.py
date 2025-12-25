@@ -7,7 +7,7 @@ class CHARGECODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 19:57:05.284308
+    Date: 2025-12-25 20:03:24.104014
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/ChargeCode#")
