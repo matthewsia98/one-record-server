@@ -7,10 +7,12 @@ class API(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-16 19:27:38.614618
+    Date: 2025-12-25 02:55:54.251839
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/api#")
+
+    _fail = True
 
     ACCESS_DELEGATION_REQUEST_ACCEPTED: URIRef  #
     ACCESS_DELEGATION_REQUEST_FAILED: URIRef  #

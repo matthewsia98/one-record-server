@@ -7,10 +7,12 @@ class CARGO(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-16 19:28:06.084052
+    Date: 2025-12-25 02:55:54.885856
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/cargo#")
+
+    _fail = True
 
     ACCELEROMETER: URIRef  # Indicates the sensor type as accelerometer
     ACTIVE: URIRef  # Used when a LogisticsActivity is active
@@ -411,7 +413,7 @@ class CARGO(DefinedNamespace):
     dimensionsForRate: URIRef  # Information about the Dimensions used for the rate described by the Line Item
     dimensionsUnit: URIRef  # Preferred unit for measurement and dimensions
     direction: URIRef  # Direction to indicate if it's Inbound or Outbound
-    discount: URIRef  # This is used as a discount to the �official� transportation charge on AWB to arrive at actual selling price
+    discount: URIRef  # This is used as a discount to the “official” transportation charge on AWB to arrive at actual selling price
     distanceCalculated: URIRef  # Information about the calculated distance
     distanceMeasured: URIRef  # Information about the measured distance
     documentIdentifier: URIRef  # Unique document identifier
@@ -731,7 +733,7 @@ class CARGO(DefinedNamespace):
     resultOfCheck: URIRef  #
     resultValue: URIRef  # Information about a result Value of any kind of the Check
     salutation: URIRef  # Salutation
-    screeningMethods: URIRef  # Screening methods which have been used to secure the cargo PHS � Physical Inspection and/or hand search VCK - Visual check XRY- X-ray equipment EDS - Explosive detection system EDD - Explosive detection dogsETD - Explosive trace detection equipment - particles or vapor CMD - Cargo metal detection AOM - Subjected to any other means: this entry should be followed by free text specifying what other mean was used to secure the cargo
+    screeningMethods: URIRef  # Screening methods which have been used to secure the cargo PHS – Physical Inspection and/or hand search VCK - Visual check XRY- X-ray equipment EDS - Explosive detection system EDD - Explosive detection dogsETD - Explosive trace detection equipment - particles or vapor CMD - Cargo metal detection AOM - Subjected to any other means: this entry should be followed by free text specifying what other mean was used to secure the cargo
     seal: URIRef  # Seal identifier
     sealNumber: URIRef  # ULD seal number if applicable
     securityDeclarations: URIRef  # Security details of the piece
