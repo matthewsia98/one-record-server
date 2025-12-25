@@ -2,11 +2,10 @@ from __future__ import annotations
 
 from typing import Optional, Self, Set, override
 
-from fastapi import Depends
 from pydantic import BaseModel, Field
 from rdflib import RDF, XSD, BNode, Graph, Literal
+from rdflib.graph import _SubjectType
 
-from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
 from app.namespaces._API import API
 
@@ -30,7 +29,7 @@ class ErrorDetail(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
+    def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
         raise NotImplementedError()
 
 
@@ -57,7 +56,7 @@ class Error(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
+    def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
         raise NotImplementedError()
 
     @classmethod

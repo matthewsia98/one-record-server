@@ -3,16 +3,10 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional, Self, override
 
-from fastapi import Depends
-from pydantic import (
-    BaseModel,
-    SerializationInfo,
-    field_validator,
-    model_serializer,
-)
+from pydantic import BaseModel, SerializationInfo, field_validator, model_serializer
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
+from rdflib.graph import _SubjectType
 
-from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
@@ -41,13 +35,8 @@ class Subscription(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
-        return cls(
-            # id=IRI(""),
-            subscriber=IRI(""),
-            topic_type=IRI(""),
-            topic="",
-        )
+    def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
+        raise NotImplementedError()
 
     @override
     def to_graph(self) -> Graph:

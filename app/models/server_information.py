@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-from typing import Self, Set, override
+from typing import Optional, Self, Set, override
 
 import orjson
 import rdflib
-from fastapi import Depends
 from pydantic import BaseModel, Field, SerializationInfo, model_serializer
 from pyld import jsonld
 from rdflib import RDF, XSD, Graph, Literal, URIRef
+from rdflib.graph import _SubjectType
 
-from app.dependencies.graph import parse_graph
 from app.models.common import IRI, Graphable
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
@@ -87,8 +86,9 @@ class ServerInformation(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
-        subject = next(graph.subjects(RDF.type, API.ServerInformation))
+    def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
+        if subject is None:
+            subject = next(graph.subjects(RDF.type, API.ServerInformation))
 
         has_data_holder: IRI
         match graph.value(subject, API.hasDataHolder):

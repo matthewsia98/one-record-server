@@ -9,8 +9,11 @@ from fastapi import APIRouter, Depends, Header, Query, Request, Response, status
 from rdflib import RDF, URIRef
 
 from app.dependencies.datetime import parse_datetime_param
+from app.dependencies.graph import parse_graph_as
 from app.models.logistics_object import LogisticsObject
 from app.models.organization import Organization
+from app.models.piece import Piece
+from app.models.shipment import Shipment
 from app.namespaces._CARGO import CARGO
 
 router = APIRouter()
@@ -120,7 +123,7 @@ async def receive_logistics_object(
         },
     ),
     # _doc_body: LogisticsObject = Body(...),
-    logistics_object: LogisticsObject = Depends(LogisticsObject.from_graph),
+    logistics_object: LogisticsObject = Depends(parse_graph_as(LogisticsObject)),
 ):
     debug(logistics_object.iri)
     debug(logistics_object.graph.serialize())
@@ -132,8 +135,12 @@ async def receive_logistics_object(
     match logistics_object_type:
         case CARGO.Shipment:
             debug("It's a shipment")
+            shipment = Shipment.from_graph(logistics_object.graph)
+            debug(shipment)
         case CARGO.Piece:
             debug("It's a piece")
+            piece = Piece.from_graph(logistics_object.graph)
+            debug(piece)
         case _:
             debug(logistics_object_type)
 

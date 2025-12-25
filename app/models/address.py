@@ -1,10 +1,9 @@
-from typing import List, Self, override
+from typing import List, Optional, Self, override
 
-from fastapi import Depends
 from pydantic import BaseModel
 from rdflib import Graph
+from rdflib.graph import _SubjectType
 
-from app.dependencies.graph import parse_graph
 from app.models.code_list_element import CodeListElement
 from app.models.common import Graphable
 
@@ -26,5 +25,5 @@ class Address(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
+    def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
         raise NotImplementedError()

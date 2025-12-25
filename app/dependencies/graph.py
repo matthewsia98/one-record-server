@@ -2,10 +2,16 @@
 Docstring for app.dependencies.graph
 """
 
+import json
+from typing import TypeVar
+
 import orjson
-from devtools import debug
-from fastapi import Header, HTTPException, Request, status
+from devtools import debug, pprint
+from fastapi import Depends, Header, HTTPException, Request, status
 from rdflib import Graph
+
+from app.models.common import Graphable
+from app.utils.rdf import get_format_from_mime_type
 
 
 async def parse_graph(
@@ -21,20 +27,34 @@ async def parse_graph(
             detail="Content-Type header is missing",
         )
 
-    # if not content_type.startswith("application/ld+json"):
-    #     raise HTTPException(
-    #         status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-    #         detail="Content-Type must be application/ld+json",
-    #     )
+    format = get_format_from_mime_type(content_type)
+    debug(format)
 
-    body_bytes = await request.body()
-    debug(orjson.loads(body_bytes.decode()))
+    body = await request.body()
+
+    # TODO: debug
+    if format == "json-ld":
+        print(
+            json.dumps(
+                orjson.loads(body),
+                indent=4,
+            )
+        )
+    else:
+        pprint(body.decode())
 
     g = Graph()
 
-    g.parse(data=body_bytes, format="json-ld")
+    g.parse(data=body, format=format)
 
-    return g.skolemize(
-        authority="http://tc.gc.ca/",
-        basepath="/pact/one-record-server/",
-    )
+    return g
+
+
+T = TypeVar("T", bound=Graphable)
+
+
+def parse_graph_as(cls: type[T]):
+    async def wrapper(graph: Graph = Depends(parse_graph)) -> T:
+        return cls.from_graph(graph)
+
+    return wrapper

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import ClassVar, Self, Set, override
+from typing import ClassVar, Optional, Self, Set, override
 
 import aiohttp
 import orjson
@@ -10,8 +10,8 @@ from fastapi import APIRouter, Depends, Response, status
 from pydantic import BaseModel, Field, field_validator
 from pyld import jsonld
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
+from rdflib.graph import _SubjectType
 
-from app.dependencies.graph import parse_graph
 from app.dependencies.http_client import get_http_client
 from app.models.common import IRI, Graphable
 from app.models.error import Error
@@ -41,7 +41,7 @@ class Assessment(BaseModel, Graphable):
 
     @override
     @classmethod
-    def from_graph(cls, graph: Graph = Depends(parse_graph)) -> Self:
+    def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
         raise NotImplementedError()
 
     def to_logistics_event_graph(self) -> Graph:

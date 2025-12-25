@@ -6,6 +6,7 @@ from aiohttp import ClientSession
 from devtools import debug
 from fastapi import APIRouter, Depends, Response, status
 
+from app.dependencies.graph import parse_graph_as
 from app.dependencies.http_client import get_http_client
 from app.models.notification import Notification
 
@@ -101,7 +102,7 @@ async def receive_notification(
     #     example="application/ld+json",
     # ),
     # _doc_body: Notification = Body(...),
-    notification: Notification = Depends(Notification.from_graph),
+    notification: Notification = Depends(parse_graph_as(Notification)),
     http_client: ClientSession = Depends(get_http_client),
 ):
     debug(notification)
