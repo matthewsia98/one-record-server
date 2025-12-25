@@ -7,7 +7,7 @@ class RADIOACTIVEMATERIALCLASSIFICATION(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:05.945854
+    Date: 2025-12-25 19:57:19.579160
     """
 
     _NS = Namespace(

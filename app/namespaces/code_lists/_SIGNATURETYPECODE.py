@@ -7,7 +7,7 @@ class SIGNATURETYPECODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:10.393531
+    Date: 2025-12-25 19:57:27.370996
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/SignatureTypeCode#")

@@ -7,7 +7,7 @@ class SPECIALHANDLINGCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:11.290188
+    Date: 2025-12-25 19:57:28.919617
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/SpecialHandlingCode#")

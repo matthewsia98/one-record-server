@@ -7,7 +7,7 @@ class SERVICECODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:09.059820
+    Date: 2025-12-25 19:57:25.041418
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/ServiceCode#")

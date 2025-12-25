@@ -1,0 +1,249 @@
+POST {{baseUrl}}/internal/echo HTTP/1.1
+Content-Type: application/ld+json
+Accept: text/turtle; version=2.2.0
+
+{
+    "@context": {
+        "cargo": "https://onerecord.iata.org/ns/cargo#"
+    },
+    "@type": "cargo:Piece",
+    "cargo:coload": {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": "false"
+    },
+    "cargo:specialHandlingCodes": [
+        {
+            "@id": "https://onerecord.iata.org/ns/code-lists/SpecialHandlingCode#VAL"
+        }
+    ]
+}
+
+
+###
+
+GET {{baseUrl}}/ HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+###
+
+GET {{baseUrl}}/logistics-objects/_data-holder HTTP/1.1
+
+###
+
+@topicType = https://onerecord.iata.org/ns/api%23LOGISTICS_OBJECT_IDENTIFIER
+@topic = https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c
+
+GET {{baseUrl}}/subscriptions?topicType={{topicType}}&topic={{topic}} HTTP/1.1
+Accept: application/ld+json; version=2.2.0
+
+###
+
+POST {{baseUrl}}/notifications HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "api": "https://onerecord.iata.org/ns/api#"
+    },
+    "@type": "api:Notification",
+    "api:hasEventType": {
+        "@id": "api:LOGISTICS_OBJECT_CREATED"
+    },
+    "api:hasLogisticsObject": {
+        "@id": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
+    },
+    "api:hasLogisticsObjectType": {
+        "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "@value": "https://onerecord.iata.org/ns/cargo#Piece"
+    },
+    "api:isTriggeredBy": {
+        "@id": "https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed"
+    },
+    "api:hasChangedProperty": [
+        {
+            "@id": "https://onerecord.iata.org/ns/cargo#coload"
+        },
+        {
+            "@id": "https://onerecord.iata.org/ns/cargo#specialHandlingCodes"
+        }
+    ]
+}
+
+###
+
+POST {{baseUrl}}/logistics-objects HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "cargo": "https://onerecord.iata.org/ns/cargo#"
+    },
+    "@type": "cargo:Piece",
+    "cargo:coload": {
+        "@type": "http://www.w3.org/2001/XMLSchema#boolean",
+        "@value": "false"
+    },
+    "cargo:specialHandlingCodes": [
+        {
+            "@id": "https://onerecord.iata.org/ns/code-lists/SpecialHandlingCode#VAL"
+        }
+    ]
+}
+
+###
+
+POST {{baseUrl}}/logistics-objects HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "cargo": "https://onerecord.iata.org/ns/cargo#"
+    },
+    "@type": "cargo:Shipment",
+    "cargo:goodsDescription": "Lots of awesome ONE Record information materials",
+    "cargo:pieces": [
+        {
+            "@id": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
+        }
+    ]
+}
+
+###
+
+POST {{baseUrl}}/internal/assessment HTTP/1.1
+
+{
+    "target": "{{baseUrl}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+    "status": "RFI"
+}
+
+###
+
+POST {{baseUrl}}/notifications HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "api": "https://onerecord.iata.org/ns/api#"
+    },
+    "@type": "api:Notification",
+    "api:hasEventType": {
+        "@id": "api:LOGISTICS_OBJECT_CREATED"
+    },
+    "api:hasLogisticsObject": {
+        "@id": "{{baseUrl}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c"
+    },
+    "api:hasLogisticsObjectType": {
+        "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "@value": "https://onerecord.iata.org/ns/cargo#Piece"
+    },
+    "api:isTriggeredBy": {
+        "@id": "https://1r.example.com/action-requests/599fea49-7287-42af-b441-1fa618d2aaed"
+    },
+    "api:hasChangedProperty": [
+        {
+            "@id": "https://onerecord.iata.org/ns/cargo#coload"
+        },
+        {
+            "@id": "https://onerecord.iata.org/ns/cargo#specialHandlingCodes"
+        }
+    ]
+}
+
+###
+
+POST {{baseUrl}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c/logistics-events HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@context": {
+        "cargo": "https://onerecord.iata.org/ns/cargo#"
+    },
+    "@type": "cargo:LogisticsEvent",
+    "cargo:creationDate": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2023-04-01T10:38:01.000Z"
+    },
+    "cargo:eventDate": {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2023-04-01T10:38:01.000Z"
+    },
+    "cargo:eventCode": {
+        "@id": "https://onerecord.iata.org/ns/code-lists/StatusCode#DEP"
+    },
+    "cargo:eventName": "Consignment departed on a specific flight",
+    "cargo:eventTimeType": {
+        "@id": "cargo:ACTUAL",
+        "@type": "cargo:EventTimeType"
+    },
+    "cargo:partialEventIndicator": false,
+    "cargo:eventFor": {
+        "@type": "cargo:Shipment",
+        "@id": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b3c"
+    },
+    "cargo:recordingOrganization": {
+        "@type": "cargo:Company",
+        "@id": "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
+    }
+}
+
+###
+
+GET {{baseUrl}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c?embedded=true HTTP/1.1
+Accept: application/ld+json; version=2.2.0
+
+###
+
+GET {{baseUrl}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c?at=20190926T075830Z HTTP/1.1
+Content-Type: application/ld+json
+Accept: application/ld+json
+
+###
+
+POST {{baseUrl}}/notifications HTTP/1.1
+Content-Type: application/ld+json; version=2.2.0
+Accept: application/ld+json; version=2.2.0
+
+{
+    "@graph": [
+        {
+            "@id": "http://localhost:8080/logistics-objects/0e55b840-af1a-4102-9868-70fb5a429f0f",
+            "@type": [
+                "https://onerecord.iata.org/ns/cargo#LogisticsObject",
+                "https://onerecord.iata.org/ns/cargo#Shipment"
+            ],
+            "https://onerecord.iata.org/ns/cargo#goodsDescription": "UPDATED SPARE PARTS"
+        },
+        {
+            "@id": "http://localhost:8080/logistics-objects/0e55b840-af1a-4102-9868-70fb5a429f0f/notifications/0c8c6bee-c738-4166-afcc-506ee00748c5",
+            "@type": "Notification",
+            "hasChangedProperty": {
+                "@id": "https://onerecord.iata.org/ns/cargo#goodsDescription"
+            },
+            "hasEventType": {
+                "@id": "https://onerecord.iata.org/ns/api#LOGISTICS_OBJECT_UPDATED"
+            },
+            "hasLogisticsObject": {
+                "@id": "http://localhost:8080/logistics-objects/0e55b840-af1a-4102-9868-70fb5a429f0f"
+            },
+            "hasLogisticsObjectType": {
+                "@type": "http://www.w3.org/2001/XMLSchema#anyURI",
+                "@value": "https://onerecord.iata.org/ns/cargo#LogisticsObject"
+            },
+            "isTriggeredBy": {
+                "@id": "http://localhost:8080/action-requests/9ca42fae-bcf6-43c8-a735-7a55c0b85b0f"
+            }
+        }
+    ],
+    "@context": {
+        "@vocab": "https://onerecord.iata.org/ns/api#"
+    }
+}
+
+###

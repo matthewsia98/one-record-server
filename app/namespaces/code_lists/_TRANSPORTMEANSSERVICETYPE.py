@@ -7,7 +7,7 @@ class TRANSPORTMEANSSERVICETYPE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:12.626966
+    Date: 2025-12-25 19:57:31.232456
     """
 
     _NS = Namespace(

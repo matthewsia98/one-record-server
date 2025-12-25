@@ -1,4 +1,5 @@
 import datetime
+import os
 import re
 import subprocess
 from io import StringIO
@@ -13,7 +14,6 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 Path("app/namespaces").mkdir(parents=True, exist_ok=True)
-Path("app/namespaces/__init__.py").touch()
 
 
 subprocess.run(
@@ -29,8 +29,9 @@ subprocess.run(
         "API",
     ],
     check=True,
+    env={**os.environ, "PYTHONUTF8": "1"},
 )
-Path("_API.py").rename("app/namespaces/_API.py")
+Path("_API.py").replace("app/namespaces/_API.py")
 
 subprocess.run(
     [
@@ -45,8 +46,9 @@ subprocess.run(
         "CARGO",
     ],
     check=True,
+    env={**os.environ, "PYTHONUTF8": "1"},
 )
-Path("_CARGO.py").rename("app/namespaces/_CARGO.py")
+Path("_CARGO.py").replace("app/namespaces/_CARGO.py")
 
 
 options = webdriver.ChromeOptions()
@@ -95,12 +97,13 @@ for index, row in df.iterrows():
                 object_id,
             ],
             check=True,
+            env={"PYTHONUTF8": "1"},
         )
 
-        Path(f"_{object_id}.py").rename(f"app/namespaces/code_lists/_{object_id}.py")
+        Path(f"_{object_id}.py").replace(f"app/namespaces/code_lists/_{object_id}.py")
 
 
-_CODE = f'''\
+_CODELISTS = f'''\
 from rdflib.namespace import DefinedNamespace, Namespace
 {"\n".join([f"from app.namespaces.code_lists._{object_id} import {object_id}" for _, object_id in object_ids])}
 
@@ -117,9 +120,20 @@ class CODELISTS(DefinedNamespace):
 
     {"\n    ".join([f"{original_object_id}: type[DefinedNamespace] = {object_id}" for original_object_id, object_id in object_ids])}
 '''
-
 with open("app/namespaces/_CODELISTS.py", "w") as f:
-    f.write(_CODE)
+    f.write(_CODELISTS)
+
+
+__INIT__ = f"""\
+{"\n".join(["from app.namespaces.code_lists._" + object_id + " import " + object_id for _, object_id in object_ids])}
+
+
+__all__ = [
+    {",\n    ".join([object_id + ".__name__" for _, object_id in object_ids])},
+]
+"""
+with open("app/namespaces/__init__.py", "w") as f:
+    f.write(__INIT__)
 
 
 subprocess.run(

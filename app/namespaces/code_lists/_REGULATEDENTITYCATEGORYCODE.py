@@ -7,7 +7,7 @@ class REGULATEDENTITYCATEGORYCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:07.293345
+    Date: 2025-12-25 19:57:21.945668
     """
 
     _NS = Namespace(

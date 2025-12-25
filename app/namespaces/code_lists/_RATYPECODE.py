@@ -7,7 +7,7 @@ class RATYPECODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:05.500149
+    Date: 2025-12-25 19:57:18.777150
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/RaTypeCode#")

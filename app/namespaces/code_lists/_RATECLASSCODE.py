@@ -7,7 +7,7 @@ class RATECLASSCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:06.403435
+    Date: 2025-12-25 19:57:20.347879
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/code-lists/RateClassCode#")

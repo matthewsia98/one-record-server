@@ -7,7 +7,7 @@ class CARGO(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:55:54.885856
+    Date: 2025-12-25 19:56:58.672643
     """
 
     _NS = Namespace("https://onerecord.iata.org/ns/cargo#")

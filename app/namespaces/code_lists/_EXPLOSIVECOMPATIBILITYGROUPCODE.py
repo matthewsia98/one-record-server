@@ -7,7 +7,7 @@ class EXPLOSIVECOMPATIBILITYGROUPCODE(DefinedNamespace):
     DESCRIPTION_EDIT_ME_!
 
     Generated from: SOURCE_RDF_FILE_EDIT_ME_!
-    Date: 2025-12-25 02:56:00.541403
+    Date: 2025-12-25 19:57:10.005428
     """
 
     _NS = Namespace(
