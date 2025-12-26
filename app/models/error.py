@@ -2,20 +2,20 @@ from __future__ import annotations
 
 from typing import Optional, Self, Set, override
 
-from pydantic import BaseModel, Field
-from rdflib import RDF, XSD, BNode, Graph, Literal
+from pydantic import Field
+from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 from app.namespaces._API import API
 
 
-class ErrorDetail(BaseModel, Graphable):
-    # iri: IRI
+class ErrorDetail(Graphable):
+    # subject: _SubjectType
     code: str
     message: Optional[str] = None
-    property: Optional[IRI] = None
-    resource: Optional[IRI] = None
+    property: Optional[URIRef] = None
+    resource: Optional[URIRef] = None
 
     @override
     def to_graph(self) -> Graph:
@@ -33,8 +33,8 @@ class ErrorDetail(BaseModel, Graphable):
         raise NotImplementedError()
 
 
-class Error(BaseModel, Graphable):
-    # iri: IRI
+class Error(Graphable):
+    # subject: _SubjectType
     title: str
     error_detail: Set[ErrorDetail] = Field(default_factory=set)
 
@@ -62,7 +62,7 @@ class Error(BaseModel, Graphable):
     @classmethod
     def create_error(
         cls,
-        # iri: IRI,
+        # subject: _SubjectType,
         title: str,
         detail: ErrorDetail,
     ) -> Error:
@@ -75,9 +75,9 @@ class Error(BaseModel, Graphable):
     @classmethod
     def create_error_with_info(
         cls,
-        # iri: IRI,
+        # subject: _SubjectType,
         title: str,
-        # detail_iri: IRI,
+        # detail_subject: _SubjectType,
         code: str,
         detail_message: str,
     ) -> Error:

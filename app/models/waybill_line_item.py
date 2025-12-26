@@ -1,6 +1,5 @@
 from typing import Optional, Self, Set, override
 
-from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
@@ -8,7 +7,7 @@ from app.models.common import Graphable
 from app.models.line_item_package import LineItemPackage
 
 
-class WaybillLineItem(BaseModel, Graphable):
+class WaybillLineItem(Graphable):
     line_item_number: int
     line_item_packages: Set[LineItemPackage]
 

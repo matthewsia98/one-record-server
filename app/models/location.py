@@ -1,6 +1,5 @@
 from typing import Optional, Self, Set, override
 
-from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
@@ -9,7 +8,7 @@ from app.models.code_list_element import CodeListElement
 from app.models.common import Graphable
 
 
-class Location(BaseModel, Graphable):
+class Location(Graphable):
     address: Address
     location_codes: Set[CodeListElement]
     location_name: str

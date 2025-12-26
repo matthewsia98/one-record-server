@@ -1,16 +1,20 @@
-from typing import Optional, Self, override
+from typing import Annotated, Optional, Self, override
 
-from pydantic import BaseModel
-from rdflib import Graph
+from pydantic import PlainValidator
+from rdflib import Graph, URIRef
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
-from app.models.logistics_agent import LogisticsAgent
+from app.models.common import Graphable
+from app.validators.participant_identifier_validator import (
+    ParticipantIdentifierValidator,
+)
 
 
-class Party(BaseModel, Graphable):
-    party_details: LogisticsAgent
-    party_role: IRI
+class Party(Graphable):
+    # party_details: LogisticsAgent
+    party_role: Annotated[
+        URIRef, PlainValidator(ParticipantIdentifierValidator.validate)
+    ]
 
     @override
     def to_graph(self) -> Graph:

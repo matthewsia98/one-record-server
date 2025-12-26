@@ -4,25 +4,25 @@ from typing import Optional, Self, Set, override
 
 import orjson
 import rdflib
-from pydantic import BaseModel, Field, SerializationInfo, model_serializer
+from pydantic import AnyUrl, Field, SerializationInfo, model_serializer
 from pyld import jsonld
 from rdflib import RDF, XSD, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
 
 
-class ServerInformation(BaseModel, Graphable):
-    has_data_holder: IRI
-    has_server_endpoint: IRI
+class ServerInformation(Graphable):
+    has_data_holder: URIRef
+    has_server_endpoint: AnyUrl
     has_supported_api_version: Set[str] = Field(default_factory=set)
     has_supported_content_type: Set[str] = Field(default_factory=set)
     # has_supported_encoding: Set[str] = Field(default_factory=set)
     has_supported_language: Set[str] = Field(default_factory=set)
-    has_supported_ontology: Set[IRI] = Field(default_factory=set)
-    # has_supported_ontology_version: Set[IRI] = Field(default_factory=set)
+    has_supported_ontology: Set[URIRef] = Field(default_factory=set)
+    # has_supported_ontology_version: Set[URIRef] = Field(default_factory=set)
 
     @override
     def to_graph(self) -> Graph:
@@ -31,7 +31,7 @@ class ServerInformation(BaseModel, Graphable):
         subject = URIRef(str(self.has_server_endpoint))
         g.add((subject, rdflib.RDF.type, API.ServerInformation))
 
-        data_holder = URIRef(str(self.has_data_holder))
+        data_holder = self.has_data_holder
         g.add((subject, API.hasDataHolder, data_holder))
         g.add((data_holder, rdflib.RDF.type, CARGO.Company))
 
@@ -90,17 +90,17 @@ class ServerInformation(BaseModel, Graphable):
         if subject is None:
             subject = next(graph.subjects(RDF.type, API.ServerInformation))
 
-        has_data_holder: IRI
+        has_data_holder: URIRef
         match graph.value(subject, API.hasDataHolder):
             case URIRef(has_data_holder_value):
-                has_data_holder = IRI(str(has_data_holder_value))
+                has_data_holder = has_data_holder_value
             case _:
                 raise ValueError("ServerInformation is missing hasDataHolder")
 
-        has_server_endpoint: IRI
+        has_server_endpoint: AnyUrl
         match graph.value(subject, API.hasServerEndpoint):
             case Literal(has_server_endpoint_value, datatype=XSD.anyURI):
-                has_server_endpoint = IRI(str(has_server_endpoint_value))
+                has_server_endpoint = AnyUrl(str(has_server_endpoint_value))
             case _:
                 raise ValueError("ServerInformation is missing hasServerEndpoint")
 

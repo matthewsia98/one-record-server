@@ -3,8 +3,8 @@ https://iata-cargo.github.io/ONE-Record/stable/API-Security/subscriptions/
 """
 
 from fastapi import APIRouter, Header, Query, Request, Response
+from rdflib import URIRef
 
-from app.models.common import IRI
 from app.models.subscription import Subscription
 
 router = APIRouter()
@@ -171,14 +171,14 @@ async def get_subscription_info(
     )
 
     subscription = Subscription(
-        # id=IRI(
+        # id=URIRef(
         #     "https://1r.example.com/subscriptions/5f1a4869-e324-45b1-9ab0-60271ba54185"
         # ),
-        # subscriber=IRI(
+        # subscriber=URIRef(
         #     "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
         # ),
-        subscriber=IRI(subscriber),
-        topic_type=IRI(topic_type),
+        subscriber=URIRef(subscriber),
+        topic_type=URIRef(topic_type),
         topic=topic,
     )
 

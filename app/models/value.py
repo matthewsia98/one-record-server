@@ -1,15 +1,14 @@
 from typing import Optional, Self, override
 
-from pydantic import BaseModel
 from rdflib import RDF, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 from app.namespaces._CARGO import CARGO
 
 
-class Value(BaseModel, Graphable):
-    unit: IRI
+class Value(Graphable):
+    unit: URIRef
     numerical_value: float
 
     @override
@@ -22,10 +21,10 @@ class Value(BaseModel, Graphable):
         if subject is None:
             subject = next(graph.subjects(RDF.type, CARGO.Value))
 
-        unit: IRI
+        unit: URIRef
         match graph.value(subject, CARGO.unit):
             case URIRef(iri_value):
-                unit = IRI(str(iri_value))
+                unit = iri_value
 
         numerical_value: float
         match graph.value(subject, CARGO.numericalValue):

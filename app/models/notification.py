@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from rdflib import RDF, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 from app.models.logistics_object import LogisticsObject
 from app.namespaces._API import API
 
@@ -16,13 +16,13 @@ class NotificationMessage(BaseModel):
     logistics_object: Optional[LogisticsObject] = None
 
 
-class Notification(BaseModel, Graphable):
-    # iri: IRI
-    event_type: IRI
+class Notification(Graphable):
+    # subject: _SubjectType
+    event_type: URIRef
     has_logistics_object_type: Optional[str] = None
-    has_logistics_object: Optional[IRI] = None
-    triggered_by: Optional[IRI] = None
-    changed_properties: Set[IRI] = Field(default_factory=set)
+    has_logistics_object: Optional[URIRef] = None
+    triggered_by: Optional[URIRef] = None
+    changed_properties: Set[URIRef] = Field(default_factory=set)
 
     @override
     @classmethod
@@ -34,11 +34,9 @@ class Notification(BaseModel, Graphable):
         if subject is None:
             subject = next(graph.subjects(RDF.type, API.Notification))
 
-        # iri = IRI(str(subject))
-
         match graph.value(subject, API.hasEventType):
             case URIRef(has_event_type_value):
-                event_type = IRI(str(has_event_type_value))
+                event_type = has_event_type_value
             case _:
                 raise ValueError("Notification is missing hasEventType")
 
@@ -49,25 +47,25 @@ class Notification(BaseModel, Graphable):
             case _:
                 has_logistics_object_type = None
 
-        has_logistics_object: Optional[IRI]
+        has_logistics_object: Optional[URIRef]
         match graph.value(subject, API.hasLogisticsObject):
             case URIRef(has_logistics_object_value):
-                has_logistics_object = IRI(str(has_logistics_object_value))
+                has_logistics_object = has_logistics_object_value
             case _:
                 has_logistics_object = None
 
-        triggered_by: Optional[IRI]
+        triggered_by: Optional[URIRef]
         match graph.value(subject, API.isTriggeredBy):
             case URIRef(triggered_by_value):
-                triggered_by = IRI(str(triggered_by_value))
+                triggered_by = triggered_by_value
             case _:
                 triggered_by = None
 
-        changed_properties: Set[IRI] = set()
+        changed_properties: Set[URIRef] = set()
         for o in graph.objects(subject, API.hasChangedProperty):
             match o:
                 case URIRef(changed_property_value):
-                    changed_properties.add(IRI(str(changed_property_value)))
+                    changed_properties.add(changed_property_value)
                 case _:
                     continue
 

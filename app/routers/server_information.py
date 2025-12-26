@@ -2,10 +2,14 @@
 https://iata-cargo.github.io/ONE-Record/stable/API-Security/server-information/
 """
 
-from fastapi import APIRouter, Header, Response
+import orjson
+import pyld
+from fastapi import APIRouter, Header, Request, Response
+from pydantic import AnyUrl
+from rdflib import URIRef
 
-from app.models.common import IRI
 from app.models.server_information import ServerInformation
+from app.namespaces import API
 
 router = APIRouter()
 
@@ -68,6 +72,7 @@ SERVER_INFORMATION_RESPONSE_HEADERS = {
     },
 )
 async def get_server_information(
+    request: Request,
     accept: str = Header(
         alias="Accept",
         description=" 	The content type that you want the HTTP response to be formatted in.",
@@ -91,14 +96,16 @@ async def get_server_information(
     #         status_code=status.HTTP_400_BAD_REQUEST,
     #     )
 
-    serialization_format = "json-ld"
-    response_type = "application/ld+json"
+    # serialization_format = "json-ld"
+    # response_type = "application/ld+json"
+
+    base_url = str(request.base_url)
+    server_endpoint = AnyUrl(base_url)
+    data_holder = URIRef(f"{base_url}/logistics-objects/_data-holder")
 
     server_information = ServerInformation(
-        has_data_holder=IRI(
-            "https://1r.example.com/logistics-objects/957e2622-9d31-493b-8b8f-3c805064dbda"
-        ),
-        has_server_endpoint=IRI("http://1r.example.com"),
+        has_data_holder=data_holder,
+        has_server_endpoint=server_endpoint,
         has_supported_api_version={
             "2.2.0",
         },
@@ -109,19 +116,27 @@ async def get_server_information(
             "en-US",
         },
         has_supported_ontology={
-            IRI("https://onerecord.iata.org/ns/cargo/3.2.0"),
-            IRI("https://onerecord.iata.org/ns/api/2.2.0"),
+            URIRef("https://onerecord.iata.org/ns/cargo/3.2.0"),
+            URIRef("https://onerecord.iata.org/ns/api/2.2.0"),
         },
     )
 
+    g = server_information.to_graph()
+    serialized = g.serialize(format="json-ld")
+    FRAME = {
+        "@context": {
+            "@vocab": str(API._NS),
+        },
+        "@type": str(API.ServerInformation),
+        "@embed": "@always",
+    }
+    framed = pyld.jsonld.frame(orjson.loads(serialized), FRAME)
+    compacted = pyld.jsonld.compact(framed, FRAME)
+
     return Response(
         headers={
-            "Content-Type": response_type,
+            "Content-Type": "application/ld+json",
             "Content-Language": "en-US",
         },
-        content=server_information.model_dump(
-            context={
-                "format": serialization_format,
-            }
-        ),
+        content=orjson.dumps(compacted),
     )

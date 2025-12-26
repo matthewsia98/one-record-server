@@ -1,6 +1,5 @@
 from typing import Optional, Self, Set, override
 
-from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
@@ -9,7 +8,7 @@ from app.models.piece import Piece
 from app.models.value import Value
 
 
-class LineItemPackage(BaseModel, Graphable):
+class LineItemPackage(Graphable):
     package_gross_weight: Value
     package_volume: Value
     piece_references: Set[Piece]

@@ -1,6 +1,5 @@
 from typing import Optional, Self, override
 
-from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
@@ -8,7 +7,7 @@ from app.models.common import Graphable
 from app.models.logistics_activity import LogisticsActivity
 
 
-class ActivitySequence(BaseModel, Graphable):
+class ActivitySequence(Graphable):
     activity: LogisticsActivity
     sequence_number: str
 

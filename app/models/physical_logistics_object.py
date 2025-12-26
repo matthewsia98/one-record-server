@@ -1,15 +1,12 @@
-from typing import List, Optional, Self, override
+from typing import Optional, Self, override
 
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
-from app.models.activity_sequence import ActivitySequence
-from app.models.common import Graphable
+from app.models.logistics_object import LogisticsObject
 
 
-class Booking(Graphable):
-    activity_sequences: List[ActivitySequence]
-
+class PhysicalLogisticsObject(LogisticsObject):
     @override
     def to_graph(self) -> Graph:
         raise NotImplementedError()

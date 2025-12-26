@@ -1,25 +1,25 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import ClassVar, Optional, Self, Set, override
+from typing import ClassVar, List, Optional, Self, override
 
 import aiohttp
 import orjson
+import pyld
 from devtools import debug
 from fastapi import APIRouter, Depends, Response, status
-from pydantic import BaseModel, Field, field_validator
-from pyld import jsonld
+from pydantic import Field, field_validator
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
 from app.dependencies.http_client import get_http_client
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 from app.models.error import Error
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
 
 
-class Assessment(BaseModel, Graphable):
+class Assessment(Graphable):
     STATUS_DICT: ClassVar = {
         "ASC": "Assessment Completion",
         "RFI": "Request for information",
@@ -27,9 +27,9 @@ class Assessment(BaseModel, Graphable):
         "DNL": "Do Not Load",
     }
 
-    target: IRI
+    target: str
     status: str
-    errors: Set[str] = Field(default_factory=set)
+    errors: List[str] = Field(default_factory=list)
 
     @field_validator("status")
     def check_status(cls, v: str) -> str:
@@ -100,15 +100,15 @@ class Assessment(BaseModel, Graphable):
 
         node = BNode()
 
-        g.add((node, RDF.type, CARGO.Verification))
+        g.add((node, RDF.type, API.Verification))
 
-        g.add((node, API.hasLogisticsObject, URIRef(str(self.target))))
+        g.add((node, API.hasLogisticsObject, URIRef(self.target)))
 
         for error in self.errors:
             error_graph = Error(title=error).to_graph()
             g += error_graph
             error_node = next(error_graph.subjects())
-            g.add((node, CARGO.hasError, error_node))
+            g.add((node, API.hasError, error_node))
 
         g.add((node, API.hasRevision, Literal(1, datatype=XSD.positiveInteger)))
 
@@ -134,45 +134,62 @@ async def create_assessment(
 ):
     debug(assessment)
 
-    g = assessment.to_graph()
-    debug(g.serialize(format="json-ld"))
+    if len(assessment.errors) > 0:
+        g = assessment.to_verification_graph()
 
-    serialized = g.serialize(format="json-ld")
-
-    FRAME = {
-        "@context": {
-            "cargo": str(CARGO._NS),
-        },
-        "@type": str(CARGO.LogisticsEvent),
-        "@embed": "@always",
-    }
-    framed = jsonld.frame(orjson.loads(serialized), FRAME)
-    compacted = jsonld.compact(framed, FRAME)
-
-    debug(compacted)
-
-    try:
-        url = "/".join(
-            [
-                str(assessment.target).rstrip("/"),
-                "logistics-events",
-            ]
-        )
-        debug(url)
-        async with http_client.post(
-            url,
-            json=compacted,
-            headers={
-                "Accept": "application/ld+json",
-                "Content-Type": "application/ld+json",
+        serialized = g.serialize(format="json-ld")
+        FRAME = {
+            "@context": {
+                "api": str(API._NS),
             },
-        ) as response:
-            debug(response.status)
-    except Exception as e:
-        debug(e)
+            "@type": str(API.Verification),
+            "@embed": "@always",
+        }
+        framed = pyld.jsonld.frame(orjson.loads(serialized), FRAME)
+        compacted = pyld.jsonld.compact(framed, FRAME)
 
-    return Response(
-        status_code=status.HTTP_201_CREATED,
-        content=orjson.dumps(compacted),
-        media_type="application/ld+json",
-    )
+        return Response(
+            status_code=status.HTTP_201_CREATED,
+            content=orjson.dumps(compacted),
+            media_type="application/ld+json",
+        )
+    else:
+        g = assessment.to_graph()
+        serialized = g.serialize(format="json-ld")
+        FRAME = {
+            "@context": {
+                "cargo": str(CARGO._NS),
+            },
+            "@type": str(CARGO.LogisticsEvent),
+            "@embed": "@always",
+        }
+        framed = pyld.jsonld.frame(orjson.loads(serialized), FRAME)
+        compacted = pyld.jsonld.compact(framed, FRAME)
+
+        debug(compacted)
+
+        try:
+            url = "/".join(
+                [
+                    str(assessment.target).rstrip("/"),
+                    "logistics-events",
+                ]
+            )
+            debug(url)
+            async with http_client.post(
+                url,
+                json=compacted,
+                headers={
+                    "Accept": "application/ld+json",
+                    "Content-Type": "application/ld+json",
+                },
+            ) as response:
+                debug(response.status)
+        except Exception as e:
+            debug(e)
+
+        return Response(
+            status_code=status.HTTP_201_CREATED,
+            content=orjson.dumps(compacted),
+            media_type="application/ld+json",
+        )

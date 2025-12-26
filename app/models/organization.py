@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Optional, Self, override
 
-from pydantic import BaseModel
 from rdflib import RDF, BNode, Graph, Literal
 from rdflib.graph import _SubjectType
 
@@ -10,7 +9,7 @@ from app.models.common import Graphable
 from app.namespaces._CARGO import CARGO
 
 
-class Organization(BaseModel, Graphable):
+class Organization(Graphable):
     name: str
 
     @override

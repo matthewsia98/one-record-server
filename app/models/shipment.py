@@ -1,18 +1,18 @@
 from typing import List, Optional, Self, override
 
-from pydantic import BaseModel, Field
-from rdflib import RDF, Graph, Literal, Node, URIRef
+from pydantic import Field
+from rdflib import RDF, Graph, Literal, Node
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.logistics_object import LogisticsObject
 from app.models.party import Party
 from app.models.piece import Piece
 from app.models.value import Value
 from app.namespaces._CARGO import CARGO
 
 
-class Shipment(BaseModel, Graphable):
-    iri: Optional[IRI] = None
+class Shipment(LogisticsObject):
+    subject: _SubjectType
     pieces: List[Piece] = Field(default_factory=list)
     total_gross_weight: Optional[Value] = None
     involved_parties: List[Party] = Field(default_factory=list)
@@ -27,13 +27,6 @@ class Shipment(BaseModel, Graphable):
     def from_graph(cls, graph: Graph, subject: Optional[_SubjectType] = None) -> Self:
         if subject is None:
             subject = next(graph.subjects(RDF.type, CARGO.Shipment))
-
-        iri: Optional[IRI]
-        match subject:
-            case URIRef():
-                iri = IRI(str(subject))
-            case _:
-                iri = None
 
         pieces: List[Piece] = []
         for obj in graph.objects(subject, CARGO.pieces):
@@ -66,7 +59,8 @@ class Shipment(BaseModel, Graphable):
                 goods_description = None
 
         return cls(
-            iri=iri,
+            subject=subject,
+            graph=graph,
             pieces=pieces,
             total_gross_weight=total_gross_weight,
             involved_parties=involved_parties,

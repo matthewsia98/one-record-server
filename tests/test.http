@@ -117,8 +117,21 @@ Accept: application/ld+json; version=2.2.0
 POST {{baseUrl}}/internal/assessment HTTP/1.1
 
 {
-    "target": "{{baseUrl}}/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+    "target": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
     "status": "RFI"
+}
+
+###
+
+POST {{baseUrl}}/internal/assessment HTTP/1.1
+
+{
+    "target": "https://1r.example.com/logistics-objects/1a8ded38-1804-467c-a369-81a411416b7c",
+    "status": "RFI",
+    "errors": [
+        "Missing declared weight",
+        "Invalid consignee information"
+    ]
 }
 
 ###

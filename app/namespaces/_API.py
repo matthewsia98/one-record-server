@@ -85,7 +85,7 @@ class API(DefinedNamespace):
     hasChangeRequest: (
         URIRef  # Recorded change requests in the Audit Trail of a Logistics Object
     )
-    hasChangedProperty: URIRef  # List of all changed properties as IRIs after a ChangeRequest was successfully applied, e.g. [https://onerecord.iata.org/ns/cargo#hasVolumetricWeight, https://onerecord.iata.org/ns/cargo/#hasGoodsDescription]
+    hasChangedProperty: URIRef  # List of all changed properties as URIRefs after a ChangeRequest was successfully applied, e.g. [https://onerecord.iata.org/ns/cargo#hasVolumetricWeight, https://onerecord.iata.org/ns/cargo/#hasGoodsDescription]
     hasCode: URIRef  # Error code is a numeric or alphanumeric code that can be used to determine the source of the error and why it occured.
     hasContentType: URIRef  # Content types that the subscriber wants to receive in the notifications, e.g. application/ld+json
     hasDataHolder: URIRef  # The data holder of the servers data.
@@ -104,7 +104,7 @@ class API(DefinedNamespace):
     hasMessage: URIRef  # Message that describes the error
     hasOperation: URIRef  # Operation(s) to apply as PATCH on a Logistics Object
     hasPermission: URIRef  #
-    hasProperty: URIRef  # Property of the object for which the error applies in IRI format, i.e. https://onerecord.iata.org/ns/cargo#hasVolumetricWeight
+    hasProperty: URIRef  # Property of the object for which the error applies in URIRef format, i.e. https://onerecord.iata.org/ns/cargo#hasVolumetricWeight
     hasRequestStatus: URIRef  #
     hasResource: URIRef  # URI of the object where the error occurred
     hasRevision: URIRef  # Revision number of the Logistics Object, starting with 0 for changing the initial revision of a Logistics Object
@@ -116,10 +116,10 @@ class API(DefinedNamespace):
     hasSupportedEncoding: URIRef  # Optional list of supported encodings of the ONE Record server, e.g. gzip
     hasSupportedLanguage: URIRef  # Supported languages of the ONE Record API, minimum is en-US (American English)
     hasSupportedOntology: (
-        URIRef  # Supported ontologies on the server, MUST be non-versioned IRIs
+        URIRef  # Supported ontologies on the server, MUST be non-versioned URIRefs
     )
     hasSupportedOntologyVersion: (
-        URIRef  # Supported ontology versions on the server, MUST be versioned IRIs
+        URIRef  # Supported ontology versions on the server, MUST be versioned URIRefs
     )
     hasTitle: URIRef  # Short summary of the error
     hasTopic: URIRef  # The Logistics Object type or specific Logistics Object to which the subscription belongs to e.g. https://onerecord.iata.org/Piece or https://1r.example.com/7f01363f-0c6a-4414-be48-d3692e219b91
@@ -139,5 +139,5 @@ class API(DefinedNamespace):
     o: URIRef  #
     op: URIRef  #
     p: URIRef  # Operations objects must have exactly one p, predicate, member. The value of this member must be an URI, e.g. https://onerecord.iata.org/ns/cargo#hasGoodsDescription
-    s: URIRef  # Operation objects MUST have exactly one "s", subject, member. The value of this member MUST be one of IRI or blank node.
+    s: URIRef  # Operation objects MUST have exactly one "s", subject, member. The value of this member MUST be one of URIRef or blank node.
     sendLogisticsObjectBody: URIRef  # Flag specifying if the publisher should send the whole logistics object or not in the notification object

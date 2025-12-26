@@ -2,18 +2,15 @@ from __future__ import annotations
 
 from typing import Optional, Self, override
 
-from pydantic import BaseModel
-from rdflib import Graph, URIRef
+from rdflib import Graph
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 
 
-class LogisticsObject(BaseModel, Graphable):
-    iri: Optional[IRI] = None
+class LogisticsObject(Graphable):
+    subject: _SubjectType
     graph: Graph
-
-    model_config = {"arbitrary_types_allowed": True}
 
     @override
     @classmethod
@@ -21,15 +18,8 @@ class LogisticsObject(BaseModel, Graphable):
         if subject is None:
             subject = next(graph.subjects())
 
-        iri: Optional[IRI]
-        match subject:
-            case URIRef(iri_value):
-                iri = IRI(str(iri_value))
-            case _:
-                iri = None
-
         return cls(
-            iri=iri,
+            subject=subject,
             graph=graph,
         )
 

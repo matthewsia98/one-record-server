@@ -1,37 +1,28 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Optional, Self, override
+from typing import Annotated, Optional, Self, override
 
-from pydantic import BaseModel, SerializationInfo, field_validator, model_serializer
+from pydantic import PlainValidator, SerializationInfo, model_serializer
 from rdflib import RDF, XSD, BNode, Graph, Literal, URIRef
 from rdflib.graph import _SubjectType
 
-from app.models.common import IRI, Graphable
+from app.models.common import Graphable
 from app.namespaces._API import API
 from app.namespaces._CARGO import CARGO
+from app.validators.topic_type_validator import TopicTypeValidator
 
 
-class Subscription(BaseModel, Graphable):
-    # id: IRI
-    subscriber: IRI
-    topic_type: IRI
+class Subscription(Graphable):
+    # id: URIRef
+    subscriber: URIRef
+    topic_type: Annotated[URIRef, PlainValidator(TopicTypeValidator.validate)]
     topic: str
     description: Optional[str] = None
     expires_at: Optional[datetime] = None
     send_lo_body: Optional[bool] = None
     include_subscription_event_type: Optional[str] = None
     notify_request_status_change: Optional[bool] = None
-
-    @field_validator("topic_type")
-    def check_topic_type(cls, v: IRI) -> IRI:
-        allowed = {
-            str(API.LOGISTICS_OBJECT_TYPE),
-            str(API.LOGISTICS_OBJECT_IDENTIFIER),
-        }
-        if str(v) not in allowed:
-            raise ValueError(f"topic_type must be one of {allowed}")
-        return v
 
     @override
     @classmethod
@@ -52,10 +43,10 @@ class Subscription(BaseModel, Graphable):
             (
                 node,
                 API.hasSubscriber,
-                URIRef(str(self.subscriber)),
+                self.subscriber,
             )
         )
-        g.add((node, API.hasTopicType, URIRef(str(self.topic_type))))
+        g.add((node, API.hasTopicType, self.topic_type))
         g.add((node, API.includeSubscriptionEventType, API.LOGISTICS_OBJECT_UPDATED))
         g.add((node, API.includeSubscriptionEventType, API.LOGISTICS_OBJECT_CREATED))
         g.add((node, API.includeSubscriptionEventType, API.LOGISTICS_EVENT_RECEIVED))

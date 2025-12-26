@@ -1,13 +1,12 @@
 from typing import Optional, Self, override
 
-from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
 from app.models.common import Graphable
 
 
-class CodeListElement(BaseModel, Graphable):
+class CodeListElement(Graphable):
     code: str
     code_description: str
     code_level: int

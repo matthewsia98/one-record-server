@@ -1,16 +1,18 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Annotated, Optional, Self
+from typing import Optional, Self
 
-from pydantic import AnyUrl, UrlConstraints
+from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
-IRI = Annotated[AnyUrl, UrlConstraints()]
 
+class Graphable(BaseModel, ABC):
+    model_config = {
+        "arbitrary_types_allowed": True,
+    }
 
-class Graphable(ABC):
     @abstractmethod
     def to_graph(self) -> Graph: ...
 

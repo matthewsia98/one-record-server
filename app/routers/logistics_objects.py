@@ -125,7 +125,6 @@ async def receive_logistics_object(
     # _doc_body: LogisticsObject = Body(...),
     logistics_object: LogisticsObject = Depends(parse_graph_as(LogisticsObject)),
 ):
-    debug(logistics_object.iri)
     debug(logistics_object.graph.serialize())
 
     subject = next(logistics_object.graph.subjects())

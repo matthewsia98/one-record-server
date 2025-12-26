@@ -69,7 +69,7 @@ class CARGO(DefinedNamespace):
     Check: URIRef  # Action to describe a check
     CheckTemplate: URIRef  # Body of a Check referencing various Questions
     CheckTotalResult: URIRef  # Result of a Check
-    CodeListElement: URIRef  # Embedded object to transmit codes from non-RDF code lists in 1R in a semi-structured way. Code lists may be externally maintained codes (such as HS codes) or carrier-specific codes. If a code is present in RDF-form as Named Individual (like in the 1R core code lists ontology), it suffices to put in its IRI
+    CodeListElement: URIRef  # Embedded object to transmit codes from non-RDF code lists in 1R in a semi-structured way. Code lists may be externally maintained codes (such as HS codes) or carrier-specific codes. If a code is present in RDF-form as Named Individual (like in the 1R core code lists ontology), it suffices to put in its URIRef
     Company: URIRef  # Company details
     Composing: URIRef  # Action to describe build-up or break-down of LoadingUnits
     CompositionType: URIRef  # Restricted code list for Composing subtypes

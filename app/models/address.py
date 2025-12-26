@@ -1,6 +1,5 @@
 from typing import List, Optional, Self, override
 
-from pydantic import BaseModel
 from rdflib import Graph
 from rdflib.graph import _SubjectType
 
@@ -8,7 +7,7 @@ from app.models.code_list_element import CodeListElement
 from app.models.common import Graphable
 
 
-class Address(BaseModel, Graphable):
+class Address(Graphable):
     address_code: CodeListElement
     city_code: CodeListElement
     country: CodeListElement
