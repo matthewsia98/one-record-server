@@ -33,7 +33,7 @@ class ServerInformation(Graphable):
 
         data_holder = self.has_data_holder
         g.add((subject, API.hasDataHolder, data_holder))
-        g.add((data_holder, rdflib.RDF.type, CARGO.Company))
+        # g.add((data_holder, rdflib.RDF.type, CARGO.Company))
 
         g.add(
             (
@@ -41,7 +41,7 @@ class ServerInformation(Graphable):
                 API.hasServerEndpoint,
                 Literal(
                     str(self.has_server_endpoint),
-                    datatype=XSD.anyURI,
+                    # datatype=XSD.anyURI,
                 ),
             )
         )
@@ -51,7 +51,10 @@ class ServerInformation(Graphable):
                 (
                     subject,
                     API.hasSupportedApiVersion,
-                    Literal(api_version, datatype=XSD.string),
+                    Literal(
+                        api_version,
+                        # datatype=XSD.string,
+                    ),
                 )
             )
 
@@ -60,7 +63,10 @@ class ServerInformation(Graphable):
                 (
                     subject,
                     API.hasSupportedContentType,
-                    Literal(content_type, datatype=XSD.string),
+                    Literal(
+                        content_type,
+                        # datatype=XSD.string,
+                    ),
                 )
             )
 
@@ -69,7 +75,10 @@ class ServerInformation(Graphable):
                 (
                     subject,
                     API.hasSupportedLanguage,
-                    Literal(language, datatype=XSD.string),
+                    Literal(
+                        language,
+                        # datatype=XSD.string,
+                    ),
                 )
             )
 
@@ -78,7 +87,10 @@ class ServerInformation(Graphable):
                 (
                     subject,
                     API.hasSupportedOntology,
-                    Literal(ontology, datatype=XSD.anyURI),
+                    Literal(
+                        ontology,
+                        # datatype=XSD.anyURI,
+                    ),
                 )
             )
 

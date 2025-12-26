@@ -7,6 +7,7 @@ import pyld
 from fastapi import APIRouter, Header, Request, Response
 from pydantic import AnyUrl
 from rdflib import URIRef
+from rdflib.util import FORMAT_MIMETYPE_MAP
 
 from app.models.server_information import ServerInformation
 from app.namespaces import API
@@ -110,7 +111,7 @@ async def get_server_information(
             "2.2.0",
         },
         has_supported_content_type={
-            "application/ld+json",
+            mt for mts in FORMAT_MIMETYPE_MAP.values() for mt in mts
         },
         has_supported_language={
             "en-US",
